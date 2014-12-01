@@ -1,7 +1,8 @@
 //Andoni Garcia's Markov Babbler in JS. 2014
 
-var MAX_WORD 257;
-var MAX_BUFF 2500;  //25 chars/word * 100 words/sentence
+var MAX_WORD = 257;
+var MAX_BUFF = 2500;  //25 chars/word * 100 words/sentence
+var SENT = [];
 
 // =====================================================================
 // ====================== Hash Table Structs  ==========================
@@ -238,3 +239,56 @@ function firstWord(t){
 	return firstWord;
 }
 
+function htableSearch(t, s){
+	var a = t.nBuckets;
+	var b = hashFn(s);
+	var c = (b % a);
+	var bucks = t.buckets[c];
+	while(bucks.e.word !== s)
+		bucks = bucks.next;
+	return bucks.e;
+}
+
+function sentence(t){
+	var sent = [];
+
+	var words = Math.floor(Math.random() * 25);
+	while(words === 1)
+		words = Math.floor(Math.random() * 25);
+	//Creates the sentence
+	var first = firstWord(t);
+	var e = htableSearch(t, first);
+	while(words !== 0){
+		sent.push(e.word);
+		if(words > 0)
+			sent.push(" ");
+		var nxt = nextWord(e);
+		if(nxt === "EOS")
+			break;
+		e = htableSearch(t, nxt);
+		words--;
+	}
+	sent.push(".");
+	var finalSent = sent.join("");
+	return finalSent;
+}
+
+function paragraph(t, len){
+	var par = [];
+	par.push("\t");
+	while(len !== 0){
+		par.push(sentence(t));
+		par.push(" ");
+		len--;
+	}
+	return par.join("");
+}
+
+function babble(pars, sents, t){
+	var bab = [];
+	while(pars !== 0){
+		--pars;
+		bab.push(paragraph(t, sents));
+	}
+	return bab;
+}

@@ -291,14 +291,14 @@ function paragraph(t, len){
 	return par.join("");
 }
 
-function babble(pars, sents, t){
-	document.getElementById("toBabble").innerHTML = "In babble";
+function babble(pars, sents){
+	document.getElementById("writeToMe").innerHTML = "In babble";
 	var bab = [""];
-	document.getElementById("toBabble").innerHTML = "init the array";
+	document.getElementById("writeToMe").innerHTML = "init the array";
 	while(pars !== 0){
-		document.getElementById("toBabble").innerHTML = "paragraph!";
+		document.getElementById("writeToMe").innerHTML = "paragraph!";
 		--pars;
-		bab.push(paragraph(t, sents));
+		bab.push(paragraph(TABLE, sents));
 	}
-	return bab;
+	document.getElementById("writeToMe").innerHTML = bab.join("");
 }

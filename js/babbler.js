@@ -163,12 +163,12 @@ function insertFile(upload, table){
 	// Grabs the first word of the array
 	currentWord = upload[ct++];
 	// Keeps grabbing until it gets a "printable" word
-	while(!printable(currentWord))
+	while(!isPrintable(currentWord))
 		currentWord = upload[ct++];
 	// Grabs the next word
 	while(nextWord = upload[ct++] && nextWord != null && nextWord != undefined){
 		// Keeps grabbing until it gets a "printable" word
-		while(!printable(nextWord))
+		while(!isPrintable(nextWord))
 			nextWord = upload[ct++];
 		// Checks if currentWord is the end of the sentence
 		if(endOfSent(currentWord)){

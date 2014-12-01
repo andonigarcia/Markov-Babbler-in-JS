@@ -257,6 +257,7 @@ function htableSearch(t, s){
 }
 
 function sentence(t){
+	console.log("In Sentence");
 	var sent = [""];
 
 	var words = Math.floor(Math.random() * 25);
@@ -277,10 +278,12 @@ function sentence(t){
 	}
 	sent.push(".");
 	var finalSent = sent.join("");
+	console.log("Exiting Sentence");
 	return finalSent;
 }
 
 function paragraph(t, len){
+	console.log("In Paragraph");
 	var par = [""];
 	par.push("\t");
 	while(len !== 0){
@@ -288,6 +291,7 @@ function paragraph(t, len){
 		par.push(" ");
 		len--;
 	}
+	console.log("Exiting Paragraph");
 	return par.join("");
 }
 

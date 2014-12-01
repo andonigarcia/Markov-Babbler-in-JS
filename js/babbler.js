@@ -39,9 +39,9 @@ function newBucket(entry){
 }
 
 function newHtable(nBucks){
-	var bucks = new Array(nBucks);
+	var bucks = [];
 	for(var i = 0; i < nBucks; i++){
-		bucks[i] = null;
+		bucks.push(null);
 	}
 
 	this.nBuckets = nBucks;

@@ -6,7 +6,8 @@ function huckleberryFinnText() {
 }
 
 function settingUp(text){
-	var table = newHtable(157);
+	var nBucks = 157;
+	var table = new newHtable(nBucks);
 	table = insertFile(text, table);
 	return table;
 }

@@ -292,7 +292,9 @@ function paragraph(t, len){
 }
 
 function babble(pars, sents, t){
+	document.getElementById("toBabble").innerHTML = "In babble";
 	var bab = [];
+	document.getElementById("toBabble").innerHTML = "init the array";
 	while(pars !== 0){
 		document.getElementById("toBabble").innerHTML = "paragraph!";
 		--pars;

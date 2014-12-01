@@ -39,7 +39,7 @@ function newBucket(entry){
 }
 
 function newHtable(nBucks){
-	var bucks = [];
+	var bucks = [null];
 	for(var i = 0; i < nBucks; i++){
 		bucks.push(null);
 	}
@@ -257,7 +257,7 @@ function htableSearch(t, s){
 }
 
 function sentence(t){
-	var sent = [];
+	var sent = [""];
 
 	var words = Math.floor(Math.random() * 25);
 	while(words === 1)
@@ -281,7 +281,7 @@ function sentence(t){
 }
 
 function paragraph(t, len){
-	var par = [];
+	var par = [""];
 	par.push("\t");
 	while(len !== 0){
 		par.push(sentence(t));
@@ -293,7 +293,7 @@ function paragraph(t, len){
 
 function babble(pars, sents, t){
 	document.getElementById("toBabble").innerHTML = "In babble";
-	var bab = [];
+	var bab = [""];
 	document.getElementById("toBabble").innerHTML = "init the array";
 	while(pars !== 0){
 		document.getElementById("toBabble").innerHTML = "paragraph!";

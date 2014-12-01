@@ -13,7 +13,6 @@ function settingUp(text){
 }
 
 function goBabble(){
-	document.body.style.cursor = "wait";
 	document.getElementById("toBabble").innerHTML = "Parsing the text...";
 	var huck = huckleberryFinnText();
 	var t = settingUp(huck);
@@ -21,6 +20,5 @@ function goBabble(){
 	var bab = babble(5, 5, t);
 	var text = bab.join("\n");
 	document.getElementById("toBabble").innerHTML = text;
-	document.body.style.cursor = "auto";
 	return;
 }

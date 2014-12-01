@@ -280,25 +280,6 @@ function sentence(t){
 	return finalSent;
 }
 
-function paragraph(t, len){
-	var par = [""];
-	par.push("\t");
-	while(len !== 0){
-		par.push(sentence(t));
-		par.push(" ");
-		len--;
-	}
-	return par.join("");
-}
-
-function babble(pars, sents){
-	document.getElementById("writeToMe").innerHTML = "In babble";
-	var bab = [""];
-	document.getElementById("writeToMe").innerHTML = "init the array";
-	while(pars !== 0){
-		document.getElementById("writeToMe").innerHTML = "paragraph!";
-		--pars;
-		//bab.push(paragraph(TABLE, sents));
-	}
-	document.getElementById("writeToMe").innerHTML = bab.join(",");
+function babble(){
+	document.getElementById("writeToMe").innerHTML = sentence(TABLE);
 }

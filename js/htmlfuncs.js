@@ -1,5 +1,5 @@
-function huckleberryFinnText(){
-	s = "You don't know about me, without you have read a book by the name of
+function huckleberryFinnText() {
+	var s = "You don't know about me, without you have read a book by the name of
 The Adventures of Tom Sawyer, but that ain't no matter. That book
 was made by Mr. Mark Twain, and he told the truth, mainly. There was
 things which he stretched, but mainly he told the truth. That is

@@ -10,5 +10,7 @@ function settingUp(text){
 	TABLE = insertFile(text, TABLE);
 }
 
-document.body.onload = settingUp(huckleberryFinnText());
-document.getElementById("toBabble").onload = function setOk(){document.getElementByID("toBabble").innerHTML = "Everything is Initialized"};
+function init(){
+	settingUp(huckleberryFinnText());
+	document.getElementById("toBabble").innerHTML = "Everything's ready to go";
+}

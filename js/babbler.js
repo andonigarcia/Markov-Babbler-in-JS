@@ -209,17 +209,19 @@ function nextWord(e){
 }
 
 function firstWord(t){
+	console.log("In First Word");
 	var checks = Math.floor(Math.random() * 6);
 	var randNum = Math.floor(Math.random() * t.nBuckets);
 	var bucks = t.buckets[randNum];
 	var firstWord;
 	while(checks != 0){
+		console.log("In while loop");
 		if(bucks == null){
 			randNum = Math.floor(Math.random() * t.nBuckets);
 			bucks = t.buckets[randNum];
 			continue;
 		}
-
+		console.log("Bucket was null");
 		var tmp = bucks.e.word;
 		var c = tmp.charCodeAt(0);
 		if(65 <= c && c <= 90){
@@ -233,14 +235,14 @@ function firstWord(t){
 				bucks = bucks.next;
 				continue;
 			}
-			if(bucks.next == null){
-				randNum = Math.floor(Math.random() * t.nBuckets);
-				bucks = t.buckets[randNum];
-				continue;
-			} else {
-				bucks = bucks.next;
-				continue;
-			}
+		}
+		if(bucks.next == null){
+			randNum = Math.floor(Math.random() * t.nBuckets);
+			bucks = t.buckets[randNum];
+			continue;
+		} else {
+			bucks = bucks.next;
+			continue;
 		}
 	}
 	return firstWord;

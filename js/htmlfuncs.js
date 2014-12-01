@@ -13,9 +13,10 @@ function settingUp(text){
 }
 
 function goBabble(){
-	document.getElementById("toBabble").innerHTML = "Parsing the text...";
-	/*var huck = huckleberryFinnText();
-	var t = settingUp(huck);
+	document.getElementById("toBabble").innerHTML = "Parsing the text..";
+	var huck = huckleberryFinnText();
+	document.getElementById("toBabble").innerHTML = "Huck was broken down";
+	/*var t = settingUp(huck);
 	document.getElementById("toBabble").innerHTML = "Babbling...";
 	var bab = babble(5, 5, t);
 	var text = bab.join("\n");

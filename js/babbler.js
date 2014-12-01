@@ -39,9 +39,10 @@ function newBucket(entry){
 }
 
 function newHtable(nBucks){
-	var bucks = [null];
+	var bucks = [];
 	for(var i = 0; i < nBucks; i++){
-		bucks.push(null);
+		var tmp = new newBucket(null);
+		bucks.push(tmp);
 	}
 
 	this.nBuckets = nBucks;
@@ -54,7 +55,7 @@ function newHtable(nBucks){
 
 function bucketMem(s, b){
 	var tmp = b;
-	while(tmp != null){
+	while(tmp.e != null){
 		if(tmp.e.word === s)
 			return true;
 		tmp = tmp.nextBucket;

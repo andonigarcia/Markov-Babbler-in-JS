@@ -13,7 +13,8 @@ function settingUp(text){
 }
 
 function goBabble(){
-	document.getElementById("toBabble").innerHTML = Parsing the text...;
+	var msg1 = "Parsing the text..."
+	document.getElementById("toBabble").innerHTML = msg1;
 	var huck = huckleberryFinnText();
 	var t = settingUp(huck);
 	document.getElementById("toBabble").innerHTML = "Babbling...";

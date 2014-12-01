@@ -298,7 +298,9 @@ function babble(pars, sents){
 	while(pars !== 0){
 		console.log("paragraph!");
 		--pars;
-		bab.push(paragraph(TABLE, sents));
+		var s = paragraph(TABLE, sents);
+		console.log(s);
+		bab.push(s);
 	}
 	document.getElementById("writeToMe").innerHTML = bab.join("");
 }

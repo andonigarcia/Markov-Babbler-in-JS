@@ -18,8 +18,8 @@ function goBabble(){
 	document.getElementById("toBabble").innerHTML = "Huck was broken down";
 	var t = settingUp(huck);
 	document.getElementById("toBabble").innerHTML = "Babbling...";
-	var bab = babble(5, 5, t);
-	document.getElementById("toBabble").innerHTML = "Babble Worked. Printing..."
+	//var bab = babble(5, 5, t);
+	//document.getElementById("toBabble").innerHTML = "Babble Worked. Printing..."
 	/*var text = bab.join("\n");
 	document.getElementById("toBabble").innerHTML = text;
 	return;*/

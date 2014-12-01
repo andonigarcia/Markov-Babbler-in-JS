@@ -331,5 +331,43 @@ function settingUp(text){
 function init(){
 	settingUp(huckleberryFinnText());
 	console.log("Everything's ready to go");
-	babble(1, 1);
+	printHtable(TABLE);
+}
+
+
+// DEBUG TOOLS
+
+function printList(l){
+	var list = l;
+	while(list !== null){
+		console.log("\t"+list.word+" - "+list.count);
+		list = list.nextWord;
+	}
+	return;
+}
+
+function printEntry(e){
+	var entry = e;
+	console.log("   "+entry.word+" - "+entry.count);
+	printList(entry.nextWord);
+	return;
+}
+
+function printBucket(b){
+	var bckt = b;
+	while(bckt !== null){
+		printEntry(bckt.e);
+		bckt = bckt.nextBucket;
+	}
+	return;
+}
+
+function printHtable(t){
+	var tbl = t;
+	console.log(t.nBuckets+" buckets");
+	for(var i = 0; i < t.nBuckets; i++){
+		console.log(i+"\n");
+		printBucket(tbl.buckets[i]);
+	}
+	console.log("END\n");
 }

@@ -217,12 +217,13 @@ function firstWord(t){
 	var firstWord = "";
 	while(checks != 0){
 		console.log("In while loop");
-		if(bucks == null){
+		if(bucks.e == null){
+			console.log("Bucket was null");
 			randNum = Math.floor(Math.random() * t.nBuckets);
 			bucks = t.buckets[randNum];
 			continue;
 		}
-		console.log("Bucket was null");
+		console.log("Bucket was not null");
 		var tmp = bucks.e.word;
 		var c = tmp.charCodeAt(0);
 		if(65 <= c && c <= 90){

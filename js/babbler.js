@@ -19,6 +19,7 @@ function hashFn(word){
 		res += tmp;
 	}
 	return res;
+}
 
 function newList(word){
 	this.word = word;
@@ -84,7 +85,7 @@ function htableMem(s, t){
 
 function endOfSent(s){
 	var lastChar = s.charAt(s.length - 1);
-	if(lastChar === "." || lastChar ==== "?" || lastChar === "!")
+	if(lastChar === "." || lastChar === "?" || lastChar === "!")
 		return true;
 	return false;
 }

@@ -145,7 +145,7 @@ function htableInsert(t, s, nextW){
 		}
 	// The bucket does not contain the current word
 	} else {
-		var lnew = new newList(next);
+		var lnew = new newList(nextW);
 		var enew = new newEntry(s);
 		enew.nextWord = lnew;
 		var bnew = new newBucket(enew);

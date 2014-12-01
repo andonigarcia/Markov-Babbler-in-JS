@@ -294,6 +294,7 @@ function paragraph(t, len){
 function babble(pars, sents, t){
 	var bab = [];
 	while(pars !== 0){
+		document.getElementById("toBabble").innerHTML = "paragraph!";
 		--pars;
 		bab.push(paragraph(t, sents));
 	}

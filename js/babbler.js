@@ -54,7 +54,7 @@ function newHtable(nBucks){
 
 function bucketMem(s, b){
 	var tmp = b;
-	while(tmp != NULL){
+	while(tmp != null){
 		if(tmp.e.word === s)
 			return true;
 		tmp = tmp.nextBucket;
@@ -64,7 +64,7 @@ function bucketMem(s, b){
 
 function listMem(s, l){
 	var tmp = l;
-	while(tmp != NULL){
+	while(tmp != null){
 		if(tmp.word === s)
 			return true;
 		tmp = tmp.nextWord

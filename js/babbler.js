@@ -214,13 +214,19 @@ function firstWord(t){
 	var bucks = t.buckets[randNum];
 	var firstWord;
 	while(checks != 0){
+		if(bucks == null){
+			randNum = Math.floor(Math.random() * t.nBuckets);
+			bucks = t.buckets[randNum];
+			continue;
+		}
+
 		var tmp = bucks.e.word;
 		var c = tmp.charCodeAt(0);
 		if(65 <= c && c <= 90){
 			checks--;
 			firstWord = tmp;
 			if(bucks.next == null){
-				var randNum = Math.floor(Math.random() * t.nBuckets);
+				randNum = Math.floor(Math.random() * t.nBuckets);
 				bucks = t.buckets[randNum];
 				continue;
 			} else {
@@ -228,7 +234,7 @@ function firstWord(t){
 				continue;
 			}
 			if(bucks.next == null){
-				var randNum = Math.floor(Math.random() * t.nBuckets);
+				randNum = Math.floor(Math.random() * t.nBuckets);
 				bucks = t.buckets[randNum];
 				continue;
 			} else {

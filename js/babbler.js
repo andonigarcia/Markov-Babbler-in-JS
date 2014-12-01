@@ -291,7 +291,7 @@ function paragraph(t, len){
 	return par.join("");
 }
 
-function babble(pars, sents){
+function babble(pars, sents){	
 	console.log("In babble");
 	var bab = [""];
 	console.log("init the array");
@@ -318,4 +318,5 @@ function settingUp(text){
 function init(){
 	settingUp(huckleberryFinnText());
 	console.log("Everything's ready to go");
+	babble(1, 1);
 }

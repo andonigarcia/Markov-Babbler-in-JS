@@ -188,7 +188,7 @@ function insertFile(upload, table){
 	}
 	// Handling the end case
 	var tmp3 = strCleanup(currentWord);
-	table = htableInsert(table3, tmp3, "EOS");
+	table = htableInsert(table, tmp3, "EOS");
 	return table;
 }
 

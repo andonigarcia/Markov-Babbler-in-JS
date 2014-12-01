@@ -265,8 +265,11 @@ function sentence(t){
 		words = Math.floor(Math.random() * 25);
 	//Creates the sentence
 	var first = firstWord(t);
+	console.log("Got first word");
 	var e = htableSearch(t, first);
+	console.log("Searched htable for bucket");
 	while(words !== 0){
+		console.log("In loop");
 		sent.push(e.word);
 		if(words > 0)
 			sent.push(" ");

@@ -211,10 +211,10 @@ function nextWord(e){
 
 function firstWord(t){
 	console.log("In First Word");
-	var checks = Math.floor(Math.random() * 6);
+	var checks = Math.floor(Math.random() * 5)+1;
 	var randNum = Math.floor(Math.random() * t.nBuckets);
 	var bucks = t.buckets[randNum];
-	var firstWord;
+	var firstWord = "";
 	while(checks != 0){
 		console.log("In while loop");
 		if(bucks == null){
@@ -268,7 +268,7 @@ function sentence(t){
 		words = Math.floor(Math.random() * 25);
 	//Creates the sentence
 	var first = firstWord(t);
-	console.log("Got first word");
+	console.log("Got first word"+first);
 	var e = htableSearch(t, first);
 	console.log("Searched htable for bucket");
 	while(words !== 0){

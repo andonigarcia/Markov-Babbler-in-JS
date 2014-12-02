@@ -199,7 +199,7 @@ function insertFile(upload){
 			htableInsert(tmp, end);
 		} else {
 			var tmp1 = strCleanup(currentWord, false);
-			var tmp2 = strCleanup(currentWord, false);
+			var tmp2 = strCleanup(nextWord, false);
 			htableInsert(tmp1, tmp2);
 		}
 		currentWord = nextWord;

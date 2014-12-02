@@ -1,8 +1,6 @@
 //Andoni Garcia's Markov Babbler in JS. 2014
 
-var MAX_WORD = 257;
-var MAX_BUFF = 2500;  //25 chars/word * 100 words/sentence
-var SENT = [];
+var TABLE = new htable(51);
 
 // =====================================================================
 // ====================== Hash Table Structs  ==========================
@@ -21,28 +19,27 @@ function hashFn(word){
 	return res;
 }
 
-function newList(word){
+function list(word){
 	this.word = word;
 	this.count = 1;
-	this.nextWord = null;
+	this.nextWord = undefined;
 }
 
-function newEntry(word){
+function entry(word){
 	this.word = word;
 	this.count = 1;
-	this.nextWord = null;
+	this.nextWord = undefined;
 }
 
-function newBucket(entry){
+function bucket(entry){
 	this.e = entry;
-	this.nextBucket = null;
+	this.nextBucket = undefined;
 }
 
-function newHtable(nBucks){
+function htable(nBucks){
 	var bucks = [];
 	for(var i = 0; i < nBucks; i++){
-		var tmp = new newBucket(null);
-		bucks.push(tmp);
+		bucks.push(undefined);
 	}
 
 	this.nBuckets = nBucks;
@@ -55,7 +52,7 @@ function newHtable(nBucks){
 
 function bucketMem(s, b){
 	var tmp = b;
-	while(tmp.e != null){
+	while(tmp != undefined && tmp != null){
 		if(tmp.e.word === s)
 			return true;
 		tmp = tmp.nextBucket;
@@ -65,7 +62,7 @@ function bucketMem(s, b){
 
 function listMem(s, l){
 	var tmp = l;
-	while(tmp != null){
+	while(tmp != undefined && tmp != null){
 		if(tmp.word === s)
 			return true;
 		tmp = tmp.nextWord
@@ -76,8 +73,8 @@ function listMem(s, l){
 function htableMem(s, t){
 	var nBucks = t.nBuckets;
 	var hash = hashFn(s);
-	hash %= nBucks;
-	return bucketMem(s, t.buckets[hash]);
+	var whichBucket = hash % nBucks;
+	return bucketMem(s, t.buckets[whichBucket]);
 }
 
 // =====================================================================
@@ -91,38 +88,44 @@ function endOfSent(s){
 	return false;
 }
 
-// I Believe this has a bug at the fact that it returns in the forloop.
+// Checks that at least 1 character in the String is printable
 function isPrintable(s){
 	for(var i = 0; i < s.length; i++){
 		var c = s.charCodeAt(i);
 		if((48 <= c && c <= 57) || (65 <= c && c <= 90) ||
-			(97 <= c && c <= 122) || c === "-")
+			(97 <= c && c <= 122) || c === 45 || c === 39)
 			return true;
 	}
 	return false;
 }
 
-function strCleanup(s){
+function strCleanup(s, bool){
 	var newStr = "";
 	for(var i = 0; i < s.length; i++){
-		var c = s.charAt(i);
-		if((48 <= c && c <= 57) || (65 <= c && c <= 90) ||
-			(97 <= c && c <= 122) || c === "-")
-			newStr += c;
+		var c = s.charCodeAt(i);
+		var d = s.charAt(i);
+		if(bool && i === (s.length - 1)){
+			if(d === "." || d === "?" || d === "!"){
+				newStr += d;
+				continue;
+			}
+		}
+		if((47 < c && c < 58) || (64 < c && c < 91) || (96 < c && c < 123) || c === 45 || c === 39)
+			newStr += d;
 	}
 	return newStr;
 }
 
-function htableInsert(t, s, nextW){
-	var a = t.nBuckets;
+function htableInsert(s, nextW){
+	var a = TABLE.nBuckets;
 	var b = hashFn(s);
 	var hash = b % a;	
 
-	var curr = t.buckets[hash];
+	var curr = TABLE.buckets[hash];
 	// If the bucket already contains the current word
 	if(bucketMem(s, curr)){
 		// Finds the appropriate entry
-		while(!(curr.e.word === s))
+		while(curr.e.word !== s)
 			curr = curr.nextBucket;
 		var ent = curr.e;
 		// Increments the entry's count
@@ -132,65 +135,66 @@ function htableInsert(t, s, nextW){
 		if(listMem(nextW, ent.nextWord)){
 			var nextWd = ent.nextWord;
 			// Finds the appropriate list
-			while(!(nextWd.word === nextW))
-				nextWd = nextWd.next;
+			while(nextWd.word !== nextW)
+				nextWd = nextWd.nextWord;
 			// Increments the list's count
 			nextWd.count++;
-			return t;
+			return;
 		// The entry does not contain the word
 		} else {
-			var newL = new newList(nextW);
-			newL.next = ent.nextWord;
+			var newL = new list(nextW);
+			newL.nextWord = ent.nextWord;
 			ent.nextWord = newL;
-			return t;
+			return;
 		}
 	// The bucket does not contain the current word
 	} else {
-		var lnew = new newList(nextW);
-		var enew = new newEntry(s);
+		var lnew = new list(nextW);
+		var enew = new entry(s);
 		enew.nextWord = lnew;
-		var bnew = new newBucket(enew);
+		var bnew = new bucket(enew);
 		bnew.nextBucket = curr;
-		t.buckets[hash] = bnew;
-		return t;
+		TABLE.buckets[hash] = bnew;
+		return;
 	}
 }
 
-// Treating a file as a giant array of words
-function insertFile(upload, table){
+// Treats a "file" as a giant array of words
+function insertFile(upload){
 	var currentWord, nextWord;
 
 	var ct = 0;
+	var maxlen = upload.length;
 	// Grabs the first word of the array
 	currentWord = upload[ct++];
 	// Keeps grabbing until it gets a "printable" word
-	while(!isPrintable(currentWord))
+	while(!isPrintable(currentWord) && ct < maxlen)
 		currentWord = upload[ct++];
 	// Grabs the next word
-	while(nextWord = upload[ct++] && nextWord != null && nextWord != undefined){
+	while(nextWord = upload[ct++] && ct < maxlen){
 		// Keeps grabbing until it gets a "printable" word
-		while(!isPrintable(nextWord))
+		while(!isPrintable(nextWord) && ct < maxlen)
 			nextWord = upload[ct++];
 		// Checks if currentWord is the end of the sentence
 		if(endOfSent(currentWord)){
 			// If so, it inserts the next word as EOS and uses the next
 			// word as a first word for the next iteration.
-			var tmp = strCleanup(currentWord);
-			table = htableInsert(table, tmp, "EOS");
+			var tmp = strCleanup(currentWord, true);
+			htableInsert(tmp, "EOS");
 			currentWord = NextWord;
 			continue;
 		// Else insert it normally
 		} else {
-			var tmp1 = strCleanup(currentWord);
-			var tmp2 = strCleanup(nextWord);
-			table = htableInsert(table, tmp1, tmp2);
+			var tmp1 = strCleanup(currentWord, false);
+			var tmp2 = strCleanup(nextWord, false);
+			htableInsert(tmp1, tmp2);
 			currentWord = NextWord;
 		}
 	}
 	// Handling the end case
-	var tmp3 = strCleanup(currentWord);
-	table = htableInsert(table, tmp3, "EOS");
-	return table;
+	var tmp3 = strCleanup(currentWord, true);
+	htableInsert(tmp3, "EOS");
+	return;
 }
 
 // =====================================================================
@@ -316,8 +320,6 @@ function babble(pars, sents){
 	document.getElementById("writeToMe").innerHTML = bab.join("");
 }
 
-var TABLE = new newHtable(23);
-
 function huckleberryFinnText() {
 	var s = "You don't know about me, without you have read a book by the name of The Adventures of Tom Sawyer, but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly. There was things which he stretched, but mainly he told the truth. That is nothing. I never seen anybody but lied, one time or another, without it was Aunt Polly, or the widow, or maybe Mary. Aunt Polly- Tom's Aunt Polly, she is- and Mary, and the Widow Douglas, is all told about in that book- which is mostly a true book; with some stretchers, as I said before. Now the way that the book winds up, is this: Tom and me found the money that the robbers hid in the cave, and it made us rich. We got six thousand dollars apiece- all gold. It was an awful sight ofmoney when it was piled up. Well, Judge Thatcher, he took it and put it out at interest, and it fetched us a dollar a day apiece, all the year round- more than a body could tell what to do with. The Widow Douglas, she took me for her son, and allowed she would sivilize me; but it was rough living in the house all the time, considering how dismal regular and decent the widow was in all her ways; and so when I couldn't stand it no longer, I lit out. I got into my old rags, and my sugar-hogshead again, and was free and satisfied. But Tom Sawyer, he hunted me up and said he was going to start a band of robbers and I might join if I would go back to the widow and be respectable.";
 	var textArr = s.split(" ");
@@ -325,7 +327,7 @@ function huckleberryFinnText() {
 }
 
 function settingUp(text){
-	TABLE = insertFile(text, TABLE);
+	insertFile(text);
 }
 
 function init(){

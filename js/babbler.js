@@ -227,7 +227,7 @@ function nextWord(e){
 }
 
 function firstWord(){
-	var randNum = Math.flood(Math.random() * TABLE.firstWords.length);
+	var randNum = Math.floor(Math.random() * TABLE.firstWords.length);
 	return TABLE.firstWords[randNum];
 }
 

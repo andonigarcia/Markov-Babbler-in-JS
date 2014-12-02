@@ -264,7 +264,7 @@ function sentence(){
 		e = htableSearch(nxt);
 		if(e == undefined)
 			break;
-		//words--;
+		words--;
 	}
 	sent.pop();
 	if(!(endOfSent(lastWord)))

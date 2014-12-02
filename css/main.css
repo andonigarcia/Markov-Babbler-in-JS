@@ -38,10 +38,11 @@ body{
     margin: 0 auto;
     padding: 0 0;
     position: relative;
-    width: 553px;
+    width: 559px;
 }
 
 .nav .navMenu{
+    border: 1px #580c64 solid;
     background-color: #ed9224;
     border-radius: 5px 5px 0 0;
     color: #121ba8;
@@ -103,4 +104,15 @@ body{
 
 #writeHere{
     color: #580c64;
+}
+
+.forms button{
+    background-color: #ed9224;
+    border: 1px #580c64 solid;
+    border-radius: 3px;
+    color: #121ba8;
+}
+
+.forms button:hover{
+    background-color: #de6f54;
 }

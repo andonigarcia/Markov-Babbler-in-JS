@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html lang="en-US">
-	<head>
-		<meta charset = "utf-8">
-		<meta name="description" content="Fun Markov Babbler Written in JavaScript">
-		<meta name="author" content="Andoni Garcia">
+    <head>
+        <meta charset = "utf-8">
+        <meta name="description" content="Fun Markov Babbler Written in JavaScript">
+        <meta name="author" content="Andoni Garcia">
 
-		<title>Markov Babbler</title>
+        <title>Markov Babbler</title>
 
-		<link rel="stylesheet" href="css/main.css">
-		<script src="js/babbler.js"></script>
-		<script src="js/FileParsing.js"></script>
-		<script src="js/Debugging.js"></script>
-		<script src="js/Initializations.js"></script>
-		<script src="js/HuckleberryFinn.js"></script>
-	</head>
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/babbler.js"></script>
+        <script src="js/FileParsing.js"></script>
+        <script src="js/Debugging.js"></script>
+        <script src="js/Initializations.js"></script>
+        <script src="js/HuckleberryFinn.js"></script>
+    </head>
 
-	<body>
-		<h1>Markov Babbler</h1>
-		<br />
-		<input type="file" id="files" name="files[]" multiple />
-		<script>
-		document.getElementById('files').addEventListener('change', handleFileSelect, false);
-		</script>
-		<button type="button" onclick="huckInit()">Or Chose Huckleberry Finn</button>
-		<br />
-		<br />
-		<form name="userInput">
-			<label for="sentences">
-				Sentences:
-				<input type="number" name="sentences" step="1" value="1">
-			</label>
-			<br />
-			<br />
-			<label for="paragraphs">
-				Paragraphs:
-				<input type-"number" name="paragraphs" step="1" value="1">
-			</label>
-			<br />
-			<br />
-			<button type="button" onclick="start(this.form.sentences.value, this.form.paragraphs.value)">Ready, Set, Go!</button>
-		</form>
-		<br />
-		<br />
-		<div id="writeHere">
-		</div>
-
-
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	</body>
+    <body>
+        <nav class="nav">
+            <header class="title">Markov Babbler</header>
+            <div class="linetwo">
+                <p class="navMenu">Markov What?</p>
+                <p class="navMenu" id="middleNav">~ Babblers ~</p>
+                    <ul class="navList">
+                        <li class="navChoice">Huckleberry Finn!</li>
+                        <li class="navChoice">Shakespeare Sonnets</li>
+                        <li class="navChoice">Rap Lyrics</li>
+                        <li class="navChoice">Input Your Own Text</li>
+                    </ul>
+                <p class="navMenu">Contact Me!<p>
+            </div>
+        </nav>
+        <section class="page">
+            <div class="forms">
+                <input type="file" id="files" name="files[]" multiple />
+                <script>
+                    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                </script>
+                <button type="button" onclick="huckInit()">Huckleberry Finn</button>
+                <br />
+                <form name="userInput">
+                    <label for="sentences">
+                        Sentences:
+                        <input type="number" name="sentences" min="1" max="10" step="1" value="3">
+                    </label>
+                    <label for="paragraphs">
+                        Paragraphs:
+                        <input type="number" name="paragraphs" min="1" max="5" step="1" value="2">
+                    </label>
+                    <br />
+                    <button type="button" onclick="start(this.form.sentences.value, this.form.paragraphs.value)">Ready, Set, Go!</button>
+                </form>
+            </div>
+            <div id="writeHere">
+            </div>
+        </section>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    </body>
 </html>

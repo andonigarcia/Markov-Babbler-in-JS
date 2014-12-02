@@ -44,6 +44,7 @@ function htable(nBucks){
 
 	this.nBuckets = nBucks;
 	this.buckets = bucks;
+	this.firstWords = [];
 }
 
 // =====================================================================
@@ -81,6 +82,13 @@ function htableMem(s){
 // ====================== Insertion Functions ==========================
 // =====================================================================
 
+function isFirstWord(s){
+	var firstChar = s.charCodeAt(0);
+	if(65 <= firstChar && firstChar <= 90)
+		return true;
+	return false;
+}
+
 function endOfSent(s){
 	var lastChar = s.charAt(s.length - 1);
 	if(lastChar === "." || lastChar === "?" || lastChar === "!")
@@ -117,6 +125,11 @@ function strCleanup(s, bool){
 }
 
 function htableInsert(s, nextW){
+	// Add to firstWord list
+	if(isFirstWord(s))
+		TABLE.firtWords.push(s);
+
+	// Adds to the appropriate place in the table
 	var a = TABLE.nBuckets;
 	var b = hashFn(s);
 	var hash = b % a;	
@@ -214,41 +227,8 @@ function nextWord(e){
 }
 
 function firstWord(){
-	// Plus one so checks is never zero
-	var checks = Math.floor(Math.random() * 5) + 1;
-	var randNum = Math.floor(Math.random() * TABLE.nBuckets);
-	var bucks = TABLE.buckets[randNum];
-	var firstWord = "";
-	while(checks != 0){
-		if(bucks == undefined){
-			randNum = Math.floor(Math.random() * TABLE.nBuckets);
-			bucks = TABLE.buckets[randNum];
-			continue;
-		}
-		var tmp = bucks.e.word;
-		var c = tmp.charCodeAt(0);
-		if(65 <= c && c <= 90){
-			checks--;
-			firstWord = tmp;
-			if(bucks.nextBucket == undefined){
-				randNum = Math.floor(Math.random() * TABLE.nBuckets);
-				bucks = TABLE.buckets[randNum];
-				continue;
-			} else {
-				bucks = bucks.nextBucket;
-				continue;
-			}
-		}
-		if(bucks.nextBucket == undefined){
-			randNum = Math.floor(Math.random() * TABLE.nBuckets);
-			bucks = TABLE.buckets[randNum];
-			continue;
-		} else {
-			bucks = bucks.nextBucket;
-			continue;
-		}
-	}
-	return firstWord;
+	var randNum = Math.flood(Math.random() * TABLE.firstWords.length);
+	return TABLE.firstWords[randNum];
 }
 
 function htableSearch(s){

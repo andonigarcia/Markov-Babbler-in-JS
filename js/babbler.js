@@ -276,7 +276,7 @@ function sentence(){
 		if(words > 0)
 			sent.push(" ");
 		var nxt = nextWord(e);
-		lastWord = next;
+		lastWord = nxt;
 		if(nxt === "EOS")
 			break;
 		e = htableSearch(nxt);

@@ -118,7 +118,7 @@ function strCleanup(s, bool){
 				continue;
 			}
 		}
-		if((47 < c && c < 58) || (64 < c && c < 91) || (96 < c && c < 123) || c === 45 || c === 39)
+		if((48 <= c && c <= 57) || (65 <= c && c <= 90) || (97 <= c && c <= 122) || c === 45 || c === 39)
 			newStr += d;
 	}
 	return newStr;
@@ -172,41 +172,47 @@ function htableInsert(s, nextW){
 	}
 }
 
+function var getNextWord(arr, indx){
+	var word = arr
+}
+
 // Treats a "file" as a giant array of words
 function insertFile(upload){
 	var currentWord, nextWord;
-
+	var end = "EOS";
 	var ct = 0;
 	var maxlen = upload.length;
-	// Grabs the first word of the array
-	currentWord = upload[ct++];
-	// Keeps grabbing until it gets a "printable" word
-	while(!isPrintable(currentWord) && ct < maxlen)
-		currentWord = upload[ct++];
-	// Grabs the next word
-	while(nextWord = upload[ct++] && ct < maxlen){
-		// Keeps grabbing until it gets a "printable" word
-		while(!isPrintable(nextWord) && ct < maxlen)
-			nextWord = upload[ct++];
-		// Checks if currentWord is the end of the sentence
+
+	// A function to get the next printable word
+	function getNextWord(){
+		word = upload[ct];
+		ct++;
+		while(!isPrintable(word) && ct < maxlen){
+			word = upload[ct];
+			ct++;
+		}
+		return word;
+	};
+
+	// The insertion algorithm
+	currentWord = getNextWord();
+	nextWord = getNextWord();
+	while(ct < maxlen){
 		if(endOfSent(currentWord)){
-			// If so, it inserts the next word as EOS and uses the next
-			// word as a first word for the next iteration.
 			var tmp = strCleanup(currentWord, true);
-			htableInsert(tmp, "EOS");
-			currentWord = nextWord;
-			continue;
-		// Else insert it normally
+			htableInsert(tmp, end);
 		} else {
 			var tmp1 = strCleanup(currentWord, false);
-			var tmp2 = strCleanup(nextWord, false);
+			var tmp2 = strCleanup(currentWord, false);
 			htableInsert(tmp1, tmp2);
-			currentWord = nextWord;
 		}
+		currentWord = nextWord;
+		nextWord = getNextWord;
 	}
+
 	// Handling the end case
 	var tmp3 = strCleanup(currentWord, true);
-	htableInsert(tmp3, "EOS");
+	htableInsert(tmp3, end);
 	return;
 }
 

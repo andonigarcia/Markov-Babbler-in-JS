@@ -181,7 +181,7 @@ function insertFile(upload){
 
 	// A function to get the next printable word
 	function getNextWord(){
-		if(ct < maxlen)
+		if(ct >= maxlen)
 			return "EOS";
 		word = upload[ct];
 		ct++;

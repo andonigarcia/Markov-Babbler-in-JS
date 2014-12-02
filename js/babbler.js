@@ -1,6 +1,6 @@
 // Andoni Garcia's Markov Babbler in JS. 2014
 
-var TABLE = new htable(51);
+var TABLE = new htable(157);
 
 // =====================================================================
 // ====================== Hash Table Structs  ==========================

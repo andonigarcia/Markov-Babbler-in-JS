@@ -204,121 +204,109 @@ function insertFile(upload){
 function nextWord(e){
 	var randNum = Math.floor(Math.random() * e.count);
 	var list = e.nextWord;
-	while(list != null){
+	while(list != undefined){
 		randNum -= list.count;
 		if(randNum <= 0)
 			return list.word;
 		list = list.nextWord;
 	}
-	exit(1);
+	return;
 }
 
-function firstWord(t){
-	console.log("In First Word");
-	var checks = Math.floor(Math.random() * 5)+1;
-	var randNum = Math.floor(Math.random() * t.nBuckets);
-	var bucks = t.buckets[randNum];
+function firstWord(){
+	// Plus one so checks is never zero
+	var checks = Math.floor(Math.random() * 5) + 1;
+	var randNum = Math.floor(Math.random() * TABLE.nBuckets);
+	var bucks = TABLE.buckets[randNum];
 	var firstWord = "";
 	while(checks != 0){
-		console.log("In while loop");
-		if(bucks.e == null){
-			console.log("Bucket was null");
-			randNum = Math.floor(Math.random() * t.nBuckets);
-			bucks = t.buckets[randNum];
+		if(bucks == undefined){
+			randNum = Math.floor(Math.random() * TABLE.nBuckets);
+			bucks = TABLE.buckets[randNum];
 			continue;
 		}
-		console.log("Bucket was not null");
 		var tmp = bucks.e.word;
 		var c = tmp.charCodeAt(0);
 		if(65 <= c && c <= 90){
 			checks--;
 			firstWord = tmp;
-			if(bucks.next == null){
-				randNum = Math.floor(Math.random() * t.nBuckets);
-				bucks = t.buckets[randNum];
+			if(bucks.nextBucket == undefined){
+				randNum = Math.floor(Math.random() * TABLE.nBuckets);
+				bucks = TABLE.buckets[randNum];
 				continue;
 			} else {
-				bucks = bucks.next;
+				bucks = bucks.nextBucket;
 				continue;
 			}
 		}
-		if(bucks.next == null){
-			randNum = Math.floor(Math.random() * t.nBuckets);
-			bucks = t.buckets[randNum];
+		if(bucks.nextBucket == undefined){
+			randNum = Math.floor(Math.random() * TABLE.nBuckets);
+			bucks = TABLE.buckets[randNum];
 			continue;
 		} else {
-			bucks = bucks.next;
+			bucks = bucks.nextBucket;
 			continue;
 		}
 	}
 	return firstWord;
 }
 
-function htableSearch(t, s){
-	var a = t.nBuckets;
+function htableSearch(s){
+	var a = TABLE.nBuckets;
 	var b = hashFn(s);
 	var c = (b % a);
-	var bucks = t.buckets[c];
+	var bucks = TABLE.buckets[c];
 	while(bucks.e.word !== s)
-		bucks = bucks.next;
+		bucks = bucks.nextBucket;
 	return bucks.e;
 }
 
-function sentence(t){
-	console.log("In Sentence");
-	var sent = [""];
+function sentence(){
+	var sent = [];
 
 	var words = Math.floor(Math.random() * 25);
-	while(words === 1)
+	while(words < 2)
 		words = Math.floor(Math.random() * 25);
 	//Creates the sentence
-	var first = firstWord(t);
-	console.log("Got first word"+first);
-	var e = htableSearch(t, first);
-	console.log("Searched htable for bucket");
+	var first = firstWord();
+	var e = htableSearch(first);
 	while(words !== 0){
-		console.log("In loop");
 		sent.push(e.word);
 		if(words > 0)
 			sent.push(" ");
 		var nxt = nextWord(e);
 		if(nxt === "EOS")
 			break;
-		e = htableSearch(t, nxt);
+		e = htableSearch(nxt);
 		words--;
 	}
-	sent.push(".");
-	var finalSent = sent.join("");
-	console.log("Exiting Sentence");
-	return finalSent;
+	return sent.join("");
 }
 
-function paragraph(t, len){
-	console.log("In Paragraph");
-	var par = [""];
+function paragraph(len){
+	var par = [];
 	par.push("\t");
 	while(len !== 0){
-		par.push(sentence(t));
+		par.push(sentence());
 		par.push(" ");
 		len--;
 	}
-	console.log("Exiting Paragraph");
 	return par.join("");
 }
 
-function babble(pars, sents){	
-	console.log("In babble");
-	var bab = [""];
-	console.log("init the array");
+function babble(pars, sents){
+	var bab = [];
 	while(pars !== 0){
-		console.log("paragraph!");
-		--pars;
-		var s = paragraph(TABLE, sents);
-		console.log(s);
-		bab.push(s);
+		bab.push(paragraph(sents));
+		bab.push("\n");
+		pars--;
 	}
-	document.getElementById("writeToMe").innerHTML = bab.join("");
+	return bab.join("");
 }
+
+// =====================================================================
+// ========================= Initializations ===========================
+// =====================================================================
 
 function huckleberryFinnText() {
 	var s = "You don't know about me, without you have read a book by the name of The Adventures of Tom Sawyer, but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly. There was things which he stretched, but mainly he told the truth. That is nothing. I never seen anybody but lied, one time or another, without it was Aunt Polly, or the widow, or maybe Mary. Aunt Polly- Tom's Aunt Polly, she is- and Mary, and the Widow Douglas, is all told about in that book- which is mostly a true book; with some stretchers, as I said before. Now the way that the book winds up, is this: Tom and me found the money that the robbers hid in the cave, and it made us rich. We got six thousand dollars apiece- all gold. It was an awful sight ofmoney when it was piled up. Well, Judge Thatcher, he took it and put it out at interest, and it fetched us a dollar a day apiece, all the year round- more than a body could tell what to do with. The Widow Douglas, she took me for her son, and allowed she would sivilize me; but it was rough living in the house all the time, considering how dismal regular and decent the widow was in all her ways; and so when I couldn't stand it no longer, I lit out. I got into my old rags, and my sugar-hogshead again, and was free and satisfied. But Tom Sawyer, he hunted me up and said he was going to start a band of robbers and I might join if I would go back to the widow and be respectable.";
@@ -333,11 +321,14 @@ function settingUp(text){
 function init(){
 	settingUp(huckleberryFinnText());
 	console.log("Everything's ready to go");
-	printHtable(TABLE);
+	var test = babble(1, 1);
+	console.log(test);
 }
 
 
-// DEBUG TOOLS
+// =====================================================================
+// ====================== Debugging Functions ==========================
+// =====================================================================
 
 function printList(l){
 	var list = l;

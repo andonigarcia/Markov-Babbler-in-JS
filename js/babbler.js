@@ -188,7 +188,7 @@ function insertFile(upload){
 			var tmp1 = strCleanup(currentWord, false);
 			var tmp2 = strCleanup(nextWord, false);
 			htableInsert(tmp1, tmp2);
-			currentWord = NextWord;
+			currentWord = nextWord;
 		}
 	}
 	// Handling the end case

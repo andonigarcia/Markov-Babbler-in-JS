@@ -183,15 +183,12 @@ function insertFile(upload){
 	function getNextWord(){
 		if(ct >= maxlen)
 			return "EOS";
-		word = upload[ct];
-		ct++;
+		var word = upload[ct++];
 		while(!isPrintable(word) && ct < maxlen){
-			word = upload[ct];
-			ct++;
+			word = upload[ct++];
 		}
 		return word;
-
-	};
+	}
 
 	// The insertion algorithm
 	currentWord = getNextWord();

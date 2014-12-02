@@ -206,7 +206,7 @@ function insertFile(upload){
 			htableInsert(tmp1, tmp2);
 		}
 		currentWord = nextWord;
-		nextWord = getNextWord;
+		nextWord = getNextWord();
 	}
 
 	// Handling the end case

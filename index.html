@@ -9,13 +9,19 @@
 
 		<link rel="stylesheet" href="css/main.css">
 		<script src="js/babbler.js"></script>
+		<script src="js/FileParsing.js"></script>
+		<script src="js/Initializations.js"></script>
 	</head>
 
 	<body>
 		<h1>Markov Babbler</h1>
 		<br />
-		<p id="writeToMe"></p>
+		<input type="file" id="file-input" value="docs/HuckleberryFinn.txt" />
+		<script>
+			document.getElementById('file-input').addEventListener('click', init, flase);
+		</script>
+		<button type="button" onclick="start(1,1)">Ready, Set, Go!</button>
 
-		<button type="button" onclick="init()">Ready, Set, Go!</button>
+		<p id="writeToMe"></p>
 	</body>
 </html>

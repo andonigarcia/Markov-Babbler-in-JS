@@ -9,6 +9,6 @@ function init(file){
 }
 
 function start(){
-	printHtable();
-	//document.getElementById("writeToMe").innerHTML = test;
+	var text = babble(1, 1);
+	document.getElementById("writeToMe").innerHTML = text;
 }

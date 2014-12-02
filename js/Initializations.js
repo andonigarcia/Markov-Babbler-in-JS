@@ -5,10 +5,12 @@
 // =====================================================================
 
 function init(file){
-	insertFile(readSingleFile(file));
+	insertFile(readFile(file));
 }
 
 function start(pars, sents){
+	init("docs/HuckleberryFinn.txt");
+	console.log("Initialization worked");
 	var text = babble(pars, sents);
 	document.getElementById("writeToMe").innerHTML = test;
 }

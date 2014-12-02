@@ -341,7 +341,7 @@ function init(){
 
 function printList(l){
 	var list = l;
-	while(list !== null){
+	while(list !== undefined){
 		console.log("\t"+list.word+" - "+list.count);
 		list = list.nextWord;
 	}
@@ -357,7 +357,7 @@ function printEntry(e){
 
 function printBucket(b){
 	var bckt = b;
-	while(bckt !== null){
+	while(bckt !== undefined){
 		printEntry(bckt.e);
 		bckt = bckt.nextBucket;
 	}

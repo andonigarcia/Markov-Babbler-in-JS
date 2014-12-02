@@ -6,16 +6,44 @@
 		<meta name="author" content="Andoni Garcia">
 
 		<title>Markov Babbler</title>
+
 		<link rel="stylesheet" href="css/main.css">
+		<script src="js/babbler.js"></script>
+		<script src="js/FileParsing.js"></script>
+		<script src="js/Debugging.js"></script>
+		<script src="js/Initializations.js"></script>
 	</head>
 
 	<body>
 		<h1>Markov Babbler</h1>
 		<br />
-		<button id="toBabble" onclick="goBabble()">Ready, Set, Go!</button>
-		<p></p>
+		<input type="file" id="files" name="files[]" multiple />
+		<script>
+		document.getElementById('files').addEventListener('change', handleFileSelect, false);
+		</script>
+		<br />
+		<br />
+		<form name="userInput">
+			<label for="sentences">
+				Sentences:
+				<input type="number" name="sentences" step="1" value="1">
+			</label>
+			<br />
+			<br />
+			<label for="paragraphs">
+				Paragraphs:
+				<input type-"number" name="paragraphs" step="1" value="1">
+			</label>
+			<br />
+			<br />
+			<button type="button" onclick="start(this.form.sentences.value, this.form.paragraphs.value)">Ready, Set, Go!</button>
+		</form>
+		<br />
+		<br />
+		<div id="writeHere">
+		</div>
 
-		<script src="js/babbler.js"></script>
-		<script src="js/htmlfuncs.js"></script>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	</body>
 </html>

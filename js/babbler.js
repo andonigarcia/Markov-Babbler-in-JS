@@ -1,8 +1,6 @@
-//Andoni Garcia's Markov Babbler in JS. 2014
+// Andoni Garcia's Markov Babbler in JS. 2014
 
-var MAX_WORD = 257;
-var MAX_BUFF = 2500;  //25 chars/word * 100 words/sentence
-var SENT = [];
+var TABLE = new htable(51);
 
 // =====================================================================
 // ====================== Hash Table Structs  ==========================
@@ -21,27 +19,27 @@ function hashFn(word){
 	return res;
 }
 
-function newList(word){
+function list(word){
 	this.word = word;
 	this.count = 1;
-	this.nextWord = null;
+	this.nextWord = undefined;
 }
 
-function newEntry(word){
+function entry(word){
 	this.word = word;
 	this.count = 1;
-	this.nextWord = null;
+	this.nextWord = undefined;
 }
 
-function newBucket(entry){
+function bucket(entry){
 	this.e = entry;
-	this.nextBucket = null;
+	this.nextBucket = undefined;
 }
 
-function newHtable(nBucks){
-	var bucks = new Array(nBucks);
+function htable(nBucks){
+	var bucks = [];
 	for(var i = 0; i < nBucks; i++){
-		bucks[i] = null;
+		bucks.push(undefined);
 	}
 
 	this.nBuckets = nBucks;
@@ -54,7 +52,7 @@ function newHtable(nBucks){
 
 function bucketMem(s, b){
 	var tmp = b;
-	while(tmp != NULL){
+	while(tmp != undefined && tmp != null){
 		if(tmp.e.word === s)
 			return true;
 		tmp = tmp.nextBucket;
@@ -64,7 +62,7 @@ function bucketMem(s, b){
 
 function listMem(s, l){
 	var tmp = l;
-	while(tmp != NULL){
+	while(tmp != undefined && tmp != null){
 		if(tmp.word === s)
 			return true;
 		tmp = tmp.nextWord
@@ -72,11 +70,11 @@ function listMem(s, l){
 	return false;
 }
 
-function htableMem(s, t){
-	var nBucks = t.nBuckets;
+function htableMem(s){
+	var nBucks = TABLE.nBuckets;
 	var hash = hashFn(s);
-	hash %= nBucks;
-	return bucketMem(s, t.buckets[hash]);
+	var whichBucket = hash % nBucks;
+	return bucketMem(s, TABLE.buckets[whichBucket]);
 }
 
 // =====================================================================
@@ -90,38 +88,44 @@ function endOfSent(s){
 	return false;
 }
 
-// I Believe this has a bug at the fact that it returns in the forloop.
+// Checks that at least 1 character in the String is printable
 function isPrintable(s){
 	for(var i = 0; i < s.length; i++){
 		var c = s.charCodeAt(i);
 		if((48 <= c && c <= 57) || (65 <= c && c <= 90) ||
-			(97 <= c && c <= 122) || c === "-")
+			(97 <= c && c <= 122) || c === 45 || c === 39)
 			return true;
 	}
 	return false;
 }
 
-function strCleanup(s){
+function strCleanup(s, bool){
 	var newStr = "";
 	for(var i = 0; i < s.length; i++){
-		var c = s.charAt(i);
-		if((48 <= c && c <= 57) || (65 <= c && c <= 90) ||
-			(97 <= c && c <= 122) || c === "-")
-			newStr += c;
+		var c = s.charCodeAt(i);
+		var d = s.charAt(i);
+		if(bool && i === (s.length - 1)){
+			if(d === "." || d === "?" || d === "!"){
+				newStr += d;
+				continue;
+			}
+		}
+		if((47 < c && c < 58) || (64 < c && c < 91) || (96 < c && c < 123) || c === 45 || c === 39)
+			newStr += d;
 	}
 	return newStr;
 }
 
-function htableInsert(t, s, nextW){
-	var a = t.nBuckets;
+function htableInsert(s, nextW){
+	var a = TABLE.nBuckets;
 	var b = hashFn(s);
 	var hash = b % a;	
 
-	var curr = t.buckets[hash];
+	var curr = TABLE.buckets[hash];
 	// If the bucket already contains the current word
 	if(bucketMem(s, curr)){
 		// Finds the appropriate entry
-		while(!(curr.e.word === s))
+		while(curr.e.word !== s)
 			curr = curr.nextBucket;
 		var ent = curr.e;
 		// Increments the entry's count
@@ -131,65 +135,66 @@ function htableInsert(t, s, nextW){
 		if(listMem(nextW, ent.nextWord)){
 			var nextWd = ent.nextWord;
 			// Finds the appropriate list
-			while(!(nextWd.word === nextW))
-				nextWd = nextWd.next;
+			while(nextWd.word !== nextW)
+				nextWd = nextWd.nextWord;
 			// Increments the list's count
 			nextWd.count++;
-			return t;
+			return;
 		// The entry does not contain the word
 		} else {
-			var newL = new newList(nextW);
-			newL.next = ent.nextWord;
+			var newL = new list(nextW);
+			newL.nextWord = ent.nextWord;
 			ent.nextWord = newL;
-			return t;
+			return;
 		}
 	// The bucket does not contain the current word
 	} else {
-		var lnew = new newList(next);
-		var enew = new newEntry(s);
+		var lnew = new list(nextW);
+		var enew = new entry(s);
 		enew.nextWord = lnew;
-		var bnew = new newBucket(enew);
+		var bnew = new bucket(enew);
 		bnew.nextBucket = curr;
-		t.buckets[hash] = bnew;
-		return t;
+		TABLE.buckets[hash] = bnew;
+		return;
 	}
 }
 
-// Treating a file as a giant array of words
-function insertFile(upload, table){
+// Treats a "file" as a giant array of words
+function insertFile(upload){
 	var currentWord, nextWord;
 
 	var ct = 0;
+	var maxlen = upload.length;
 	// Grabs the first word of the array
 	currentWord = upload[ct++];
 	// Keeps grabbing until it gets a "printable" word
-	while(!printable(currentWord))
+	while(!isPrintable(currentWord) && ct < maxlen)
 		currentWord = upload[ct++];
 	// Grabs the next word
-	while(nextWord = upload[ct++] && nextWord != null && nextWord != undefined){
+	while(nextWord = upload[ct++] && ct < maxlen){
 		// Keeps grabbing until it gets a "printable" word
-		while(!printable(nextWord))
+		while(!isPrintable(nextWord) && ct < maxlen)
 			nextWord = upload[ct++];
 		// Checks if currentWord is the end of the sentence
 		if(endOfSent(currentWord)){
 			// If so, it inserts the next word as EOS and uses the next
 			// word as a first word for the next iteration.
-			var tmp = strCleanup(currentWord);
-			table = htableInsert(table, tmp, "EOS");
-			currentWord = NextWord;
+			var tmp = strCleanup(currentWord, true);
+			htableInsert(tmp, "EOS");
+			currentWord = nextWord;
 			continue;
 		// Else insert it normally
 		} else {
-			var tmp1 = strCleanup(currentWord);
-			var tmp2 = strCleanup(nextWord);
-			table = htableInsert(table, tmp1, tmp2);
-			currentWord = NextWord;
+			var tmp1 = strCleanup(currentWord, false);
+			var tmp2 = strCleanup(nextWord, false);
+			htableInsert(tmp1, tmp2);
+			currentWord = nextWord;
 		}
 	}
 	// Handling the end case
-	var tmp3 = strCleanup(currentWord);
-	table = htableInsert(table3, tmp3, "EOS");
-	return table;
+	var tmp3 = strCleanup(currentWord, true);
+	htableInsert(tmp3, "EOS");
+	return;
 }
 
 // =====================================================================
@@ -199,97 +204,111 @@ function insertFile(upload, table){
 function nextWord(e){
 	var randNum = Math.floor(Math.random() * e.count);
 	var list = e.nextWord;
-	while(list != null){
+	while(list != undefined){
 		randNum -= list.count;
 		if(randNum <= 0)
 			return list.word;
 		list = list.nextWord;
 	}
-	exit(1);
+	return;
 }
 
-function firstWord(t){
-	var checks = Math.floor(Math.random() * 6);
-	var randNum = Math.floor(Math.random() * t.nBuckets);
-	var bucks = t.buckets[randNum];
-	var firstWord;
+function firstWord(){
+	// Plus one so checks is never zero
+	var checks = Math.floor(Math.random() * 5) + 1;
+	var randNum = Math.floor(Math.random() * TABLE.nBuckets);
+	var bucks = TABLE.buckets[randNum];
+	var firstWord = "";
 	while(checks != 0){
+		if(bucks == undefined){
+			randNum = Math.floor(Math.random() * TABLE.nBuckets);
+			bucks = TABLE.buckets[randNum];
+			continue;
+		}
 		var tmp = bucks.e.word;
 		var c = tmp.charCodeAt(0);
 		if(65 <= c && c <= 90){
 			checks--;
 			firstWord = tmp;
-			if(bucks.next == null){
-				var randNum = Math.floor(Math.random() * t.nBuckets);
-				bucks = t.buckets[randNum];
+			if(bucks.nextBucket == undefined){
+				randNum = Math.floor(Math.random() * TABLE.nBuckets);
+				bucks = TABLE.buckets[randNum];
 				continue;
 			} else {
-				bucks = bucks.next;
+				bucks = bucks.nextBucket;
 				continue;
 			}
-			if(bucks.next == null){
-				var randNum = Math.floor(Math.random() * t.nBuckets);
-				bucks = t.buckets[randNum];
-				continue;
-			} else {
-				bucks = bucks.next;
-				continue;
-			}
+		}
+		if(bucks.nextBucket == undefined){
+			randNum = Math.floor(Math.random() * TABLE.nBuckets);
+			bucks = TABLE.buckets[randNum];
+			continue;
+		} else {
+			bucks = bucks.nextBucket;
+			continue;
 		}
 	}
 	return firstWord;
 }
 
-function htableSearch(t, s){
-	var a = t.nBuckets;
+function htableSearch(s){
+	var a = TABLE.nBuckets;
 	var b = hashFn(s);
 	var c = (b % a);
-	var bucks = t.buckets[c];
-	while(bucks.e.word !== s)
-		bucks = bucks.next;
-	return bucks.e;
+	var bucks = TABLE.buckets[c];
+	if(htableMem(s)){
+		while(bucks.e.word !== s)
+			bucks = bucks.nextBucket;
+		return bucks.e;
+	}
+	return undefined;
 }
 
-function sentence(t){
+function sentence(){
 	var sent = [];
 
 	var words = Math.floor(Math.random() * 25);
-	while(words === 1)
+	while(words < 2)
 		words = Math.floor(Math.random() * 25);
 	//Creates the sentence
-	var first = firstWord(t);
-	var e = htableSearch(t, first);
+	var first = firstWord();
+	var lastWord = first;
+	var e = htableSearch(first);
 	while(words !== 0){
 		sent.push(e.word);
 		if(words > 0)
 			sent.push(" ");
 		var nxt = nextWord(e);
+		lastWord = nxt;
 		if(nxt === "EOS")
 			break;
-		e = htableSearch(t, nxt);
+		e = htableSearch(nxt);
+		if(e == undefined)
+			break;
 		words--;
 	}
-	sent.push(".");
-	var finalSent = sent.join("");
-	return finalSent;
+	if(!(endOfSent(lastWord)))
+		sent.push(".");
+	return sent.join("");
 }
 
-function paragraph(t, len){
+function paragraph(len){
 	var par = [];
 	par.push("\t");
 	while(len !== 0){
-		par.push(sentence(t));
+		par.push(sentence());
 		par.push(" ");
 		len--;
 	}
 	return par.join("");
 }
 
-function babble(pars, sents, t){
+function babble(pars, sents){
 	var bab = [];
 	while(pars !== 0){
-		--pars;
-		bab.push(paragraph(t, sents));
+		bab.push(paragraph(sents));
+		bab.push("\n");
+		pars--;
 	}
 	return bab;
 }

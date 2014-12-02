@@ -269,17 +269,21 @@ function sentence(){
 		words = Math.floor(Math.random() * 25);
 	//Creates the sentence
 	var first = firstWord();
+	var lastWord = first;
 	var e = htableSearch(first);
 	while(words !== 0){
 		sent.push(e.word);
 		if(words > 0)
 			sent.push(" ");
 		var nxt = nextWord(e);
+		lastWord = next;
 		if(nxt === "EOS")
 			break;
 		e = htableSearch(nxt);
 		words--;
 	}
+	if(!(endOfSent(lastWord)))
+		sent.push(".");
 	return sent.join("");
 }
 
@@ -322,7 +326,7 @@ function init(){
 	settingUp(huckleberryFinnText());
 	console.log("Everything's ready to go");
 	var test = babble(1, 1);
-	console.log(test);
+	document.getElementById("writeToMe").innerHTML(test);
 }
 
 

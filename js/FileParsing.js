@@ -18,7 +18,8 @@ function readFile(file){
 	xmlhttp.open("GET", file, true);
 	xmlhttp.send();
 
-	return fileToParsableText(txt);
+	console.log(txt);
+	//return fileToParsableText(txt);
 }
 
 // Credit to Stack Overflow user Paolo Moretti:

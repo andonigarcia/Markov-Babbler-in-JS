@@ -70,11 +70,11 @@ function listMem(s, l){
 	return false;
 }
 
-function htableMem(s, t){
-	var nBucks = t.nBuckets;
+function htableMem(s){
+	var nBucks = TABLE.nBuckets;
 	var hash = hashFn(s);
 	var whichBucket = hash % nBucks;
-	return bucketMem(s, t.buckets[whichBucket]);
+	return bucketMem(s, TABLE.buckets[whichBucket]);
 }
 
 // =====================================================================
@@ -256,9 +256,12 @@ function htableSearch(s){
 	var b = hashFn(s);
 	var c = (b % a);
 	var bucks = TABLE.buckets[c];
-	while(bucks.e.word !== s)
-		bucks = bucks.nextBucket;
-	return bucks.e;
+	if(htableMem(s)){
+		while(bucks.e.word !== s)
+			bucks = bucks.nextBucket;
+		return bucks.e;
+	}
+	return undefined;
 }
 
 function sentence(){
@@ -280,6 +283,8 @@ function sentence(){
 		if(nxt === "EOS")
 			break;
 		e = htableSearch(nxt);
+		if(e == undefined)
+			break;
 		words--;
 	}
 	if(!(endOfSent(lastWord)))

@@ -310,5 +310,5 @@ function babble(pars, sents){
 		bab.push("\n");
 		pars--;
 	}
-	return bab.join("");
+	return bab;
 }

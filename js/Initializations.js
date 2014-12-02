@@ -8,7 +8,7 @@ function init(file){
 	insertFile(readFile(file));
 }
 
-function start(){
-	var text = babble(1, 1);
+function start(sent, par){
+	var text = babble(sent, par);
 	document.getElementById("writeToMe").innerHTML = text;
 }

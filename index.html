@@ -21,7 +21,17 @@
 		<script>
 		document.getElementById('files').addEventListener('change', handleFileSelect, false);
 		</script>
-		<button type="button" onclick="start()">Ready, Set, Go!</button>
+		<form name="userInput">
+			<label for="sentences">
+				<input type="number" name="sentences" value="1">
+				Sentences:
+			</label>
+			<label for="paragraphs">
+				<input type-"number" name="paragraphs" value="1">
+				Paragraphs:
+			</label>
+			<button type="button" onclick="start(this.form.sentences.value, this.form.paragraphs.value)">Ready, Set, Go!</button>
+		</form>
 
 		<p id="writeToMe"></p>
 

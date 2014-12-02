@@ -29,8 +29,8 @@ function printBucket(b){
 	return;
 }
 
-function printHtable(t){
-	var tbl = t;
+function printHtable(){
+	var tbl = TABLE;
 	console.log(t.nBuckets+" buckets");
 	for(var i = 0; i < t.nBuckets; i++){
 		console.log(i+"\n");

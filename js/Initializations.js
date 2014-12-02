@@ -11,6 +11,6 @@ function init(file){
 function start(){
 	init("docs/HuckleberryFinn.txt");
 	console.log("Initialization worked");
-	var text = babble(1, 1);
-	document.getElementById("writeToMe").innerHTML = test;
+	printHtable();
+	//document.getElementById("writeToMe").innerHTML = test;
 }

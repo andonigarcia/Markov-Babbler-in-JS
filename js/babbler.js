@@ -331,7 +331,7 @@ function init(){
 	settingUp(huckleberryFinnText());
 	console.log("Everything's ready to go");
 	var test = babble(1, 1);
-	document.getElementById("writeToMe").innerHTML(test);
+	document.getElementById("writeToMe").innerHTML = test;
 }
 
 

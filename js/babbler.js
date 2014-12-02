@@ -127,7 +127,7 @@ function strCleanup(s, bool){
 function htableInsert(s, nextW){
 	// Add to firstWord list
 	if(isFirstWord(s))
-		TABLE.firtWords.push(s);
+		TABLE.firstWords.push(s);
 
 	// Adds to the appropriate place in the table
 	var a = TABLE.nBuckets;

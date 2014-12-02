@@ -12,6 +12,7 @@
 		<script src="js/FileParsing.js"></script>
 		<script src="js/Debugging.js"></script>
 		<script src="js/Initializations.js"></script>
+		<script src="js/HuckleberryFinn.js"></script>
 	</head>
 
 	<body>
@@ -21,11 +22,9 @@
 		<script>
 		document.getElementById('files').addEventListener('change', handleFileSelect, false);
 		</script>
-		<button type="button" onclick="huck()">Or Chose Huckleberry Finn</button>
-		<script src="/js/HuckleberryFinn.js">
-			function huck(){
-				insertFile(HUCKLEBERRYFINN_ARRAY);
-			}
+		<button type="button" id="huckButton">Or Chose Huckleberry Finn</button>
+		<script>
+			document.getElementById('huckButton').addEventListener('click', huckInit(), false);
 		</script>
 		<br />
 		<br />

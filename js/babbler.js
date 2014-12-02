@@ -181,7 +181,7 @@ function insertFile(upload){
 			// word as a first word for the next iteration.
 			var tmp = strCleanup(currentWord, true);
 			htableInsert(tmp, "EOS");
-			currentWord = NextWord;
+			currentWord = nextWord;
 			continue;
 		// Else insert it normally
 		} else {

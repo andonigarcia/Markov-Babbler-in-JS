@@ -247,12 +247,13 @@ function htableSearch(s){
 function sentence(){
 	var sent = [];
 
-	/* var words = Math.floor(Math.random() * 25) + 3;*/
+	var words = Math.floor(Math.random() * 25) + 3;
+
 	//Creates the sentence
 	var first = firstWord();
 	var lastWord = first;
 	var e = htableSearch(first);
-	while((var words = 1) !== 0){
+	while(words !== 0){
 		sent.push(e.word);
 		if(words > 0)
 			sent.push(" ");
@@ -263,7 +264,7 @@ function sentence(){
 		e = htableSearch(nxt);
 		if(e == undefined)
 			break;
-		words--;
+		//words--;
 	}
 	sent.pop();
 	if(!(endOfSent(lastWord)))

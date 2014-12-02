@@ -9,7 +9,7 @@
 // http://stackoverflow.com/users/2567785/nathankatwijk
 function readFile(file){
 	var txt = "";
-	var xmlhttp = new XMLHTttpRequest();
+	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
 			txt = xmlhttp.responseText;

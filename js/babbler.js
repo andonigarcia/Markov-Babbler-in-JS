@@ -172,10 +172,6 @@ function htableInsert(s, nextW){
 	}
 }
 
-function var getNextWord(arr, indx){
-	var word = arr
-}
-
 // Treats a "file" as a giant array of words
 function insertFile(upload){
 	var currentWord, nextWord;

@@ -9,8 +9,6 @@ function init(file){
 }
 
 function start(){
-	init("docs/HuckleberryFinn.txt");
-	console.log("Initialization worked");
-	//printHtable();
+	printHtable();
 	//document.getElementById("writeToMe").innerHTML = test;
 }

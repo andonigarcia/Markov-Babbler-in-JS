@@ -4,41 +4,25 @@
 // ========================== File Parsing =============================
 // =====================================================================
 
-// Credit to Stack Overflow users Karanpreet Singh and NathanKatwijk:
-// http://stackoverflow.com/users/1969433/karanpreet-singh
-// http://stackoverflow.com/users/2567785/nathankatwijk
-function readFile(file){
-	var txt = "";
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function(){
-		if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
-			txt = xmlhttp.responseText;
+// Credit to Eric Bidelman
+// http://www.html5rocks.com/en/tutorials/file/dndfiles/
+function handleFileSelect(evt){
+	var files = evt.target.files;
+	for(var i = 0, f; f = files[i]; i++){
+		if(!f.type.match('text.*')){
+			continue;
 		}
-	};
-	xmlhttp.open("GET", file, true);
-	xmlhttp.send();
+		var reader = new FileReader();
+		reader.onload = (function(theFile){
+			return function(e){
+				console.log("Reading: "+escape(theFile.name));
+				insertFile(fileToParsableText(e.target.result));
+			};
+		})(f);
 
-	console.log(txt);
-	//return fileToParsableText(txt);
-}
-
-// Credit to Stack Overflow user Paolo Moretti:
-// http://stackoverflow.com/users/63011/paolo-moretti
-function readSingleFile(e){
-	var output;
-
-	var file = e.target.files[0];
-	if(!file){
-		return;
+		reader.readAsText(f);
 	}
-	var reader = new FileReader();
-	reader.onload = function(e){
-		var contents = e.target.result;
-		output = fileToParsableText(contents);
-	};
-	reader.readAsText(file);
-
-	return output;
+	console.log("Initialization Worked.");
 }
 
 function fileToParsableText(contents){

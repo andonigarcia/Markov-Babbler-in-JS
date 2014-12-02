@@ -30,11 +30,10 @@ function printBucket(b){
 }
 
 function printHtable(){
-	var tbl = TABLE;
-	console.log(t.nBuckets+" buckets");
-	for(var i = 0; i < t.nBuckets; i++){
+	console.log(TABLE.nBuckets+" buckets");
+	for(var i = 0; i < TABLE.nBuckets; i++){
 		console.log(i+"\n");
-		printBucket(tbl.buckets[i]);
+		printBucket(TABLE.buckets[i]);
 	}
 	console.log("END\n");
 }

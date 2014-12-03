@@ -4,10 +4,6 @@
 // ========================= Initializations ===========================
 // =====================================================================
 
-function init(file){
-	insertFile(readFile(file));
-}
-
 function start(sent, par){
 	var bab = babble(par, sent);
 

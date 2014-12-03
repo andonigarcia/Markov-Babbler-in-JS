@@ -1,6 +1,6 @@
 // Andoni Garcia's Markov Babbler in JS. 2014
 
-var TABLE = new htable(51);
+var TABLE = new htable(157);
 
 // =====================================================================
 // ====================== Hash Table Structs  ==========================
@@ -44,6 +44,7 @@ function htable(nBucks){
 
 	this.nBuckets = nBucks;
 	this.buckets = bucks;
+	this.firstWords = [];
 }
 
 // =====================================================================
@@ -81,6 +82,13 @@ function htableMem(s){
 // ====================== Insertion Functions ==========================
 // =====================================================================
 
+function isFirstWord(s){
+	var firstChar = s.charCodeAt(0);
+	if(65 <= firstChar && firstChar <= 90)
+		return true;
+	return false;
+}
+
 function endOfSent(s){
 	var lastChar = s.charAt(s.length - 1);
 	if(lastChar === "." || lastChar === "?" || lastChar === "!")
@@ -110,13 +118,18 @@ function strCleanup(s, bool){
 				continue;
 			}
 		}
-		if((47 < c && c < 58) || (64 < c && c < 91) || (96 < c && c < 123) || c === 45 || c === 39)
+		if((48 <= c && c <= 57) || (65 <= c && c <= 90) || (97 <= c && c <= 122) || c === 45 || c === 39)
 			newStr += d;
 	}
 	return newStr;
 }
 
 function htableInsert(s, nextW){
+	// Add to firstWord list
+	if(isFirstWord(s))
+		TABLE.firstWords.push(s);
+
+	// Adds to the appropriate place in the table
 	var a = TABLE.nBuckets;
 	var b = hashFn(s);
 	var hash = b % a;	
@@ -162,38 +175,40 @@ function htableInsert(s, nextW){
 // Treats a "file" as a giant array of words
 function insertFile(upload){
 	var currentWord, nextWord;
-
+	var end = "EOS";
 	var ct = 0;
 	var maxlen = upload.length;
-	// Grabs the first word of the array
-	currentWord = upload[ct++];
-	// Keeps grabbing until it gets a "printable" word
-	while(!isPrintable(currentWord) && ct < maxlen)
-		currentWord = upload[ct++];
-	// Grabs the next word
-	while(nextWord = upload[ct++] && ct < maxlen){
-		// Keeps grabbing until it gets a "printable" word
-		while(!isPrintable(nextWord) && ct < maxlen)
-			nextWord = upload[ct++];
-		// Checks if currentWord is the end of the sentence
+
+	// A function to get the next printable word
+	function getNextWord(){
+		if(ct >= maxlen)
+			return "EOS";
+		var word = upload[ct++];
+		while(!isPrintable(word) && ct < maxlen){
+			word = upload[ct++];
+		}
+		return word;
+	}
+
+	// The insertion algorithm
+	currentWord = getNextWord();
+	nextWord = getNextWord();
+	while(ct < maxlen){
 		if(endOfSent(currentWord)){
-			// If so, it inserts the next word as EOS and uses the next
-			// word as a first word for the next iteration.
 			var tmp = strCleanup(currentWord, true);
-			htableInsert(tmp, "EOS");
-			currentWord = nextWord;
-			continue;
-		// Else insert it normally
+			htableInsert(tmp, end);
 		} else {
 			var tmp1 = strCleanup(currentWord, false);
 			var tmp2 = strCleanup(nextWord, false);
 			htableInsert(tmp1, tmp2);
-			currentWord = nextWord;
 		}
+		currentWord = nextWord;
+		nextWord = getNextWord();
 	}
+
 	// Handling the end case
 	var tmp3 = strCleanup(currentWord, true);
-	htableInsert(tmp3, "EOS");
+	htableInsert(tmp3, end);
 	return;
 }
 
@@ -214,41 +229,8 @@ function nextWord(e){
 }
 
 function firstWord(){
-	// Plus one so checks is never zero
-	var checks = Math.floor(Math.random() * 5) + 1;
-	var randNum = Math.floor(Math.random() * TABLE.nBuckets);
-	var bucks = TABLE.buckets[randNum];
-	var firstWord = "";
-	while(checks != 0){
-		if(bucks == undefined){
-			randNum = Math.floor(Math.random() * TABLE.nBuckets);
-			bucks = TABLE.buckets[randNum];
-			continue;
-		}
-		var tmp = bucks.e.word;
-		var c = tmp.charCodeAt(0);
-		if(65 <= c && c <= 90){
-			checks--;
-			firstWord = tmp;
-			if(bucks.nextBucket == undefined){
-				randNum = Math.floor(Math.random() * TABLE.nBuckets);
-				bucks = TABLE.buckets[randNum];
-				continue;
-			} else {
-				bucks = bucks.nextBucket;
-				continue;
-			}
-		}
-		if(bucks.nextBucket == undefined){
-			randNum = Math.floor(Math.random() * TABLE.nBuckets);
-			bucks = TABLE.buckets[randNum];
-			continue;
-		} else {
-			bucks = bucks.nextBucket;
-			continue;
-		}
-	}
-	return firstWord;
+	var randNum = Math.floor(Math.random() * TABLE.firstWords.length);
+	return TABLE.firstWords[randNum];
 }
 
 function htableSearch(s){
@@ -267,9 +249,8 @@ function htableSearch(s){
 function sentence(){
 	var sent = [];
 
-	var words = Math.floor(Math.random() * 25);
-	while(words < 2)
-		words = Math.floor(Math.random() * 25);
+	var words = Math.floor(Math.random() * 25) + 3;
+
 	//Creates the sentence
 	var first = firstWord();
 	var lastWord = first;
@@ -287,6 +268,7 @@ function sentence(){
 			break;
 		words--;
 	}
+	sent.pop();
 	if(!(endOfSent(lastWord)))
 		sent.push(".");
 	return sent.join("");

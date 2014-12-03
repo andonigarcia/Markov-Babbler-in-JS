@@ -1,0 +1,172 @@
+/* Andoni Garcia's Markov Babbler in JS. 2014 */
+
+html{
+    min-height: 100%;
+}
+
+body{
+    background-color: #199bc1;
+    color: black;
+    margin: 0;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    padding: 0;
+    position: absolute;
+}
+
+body::-webkit-scrollbar{
+    display: none;
+}
+
+/* Nav Bar */
+.nav{
+    background: #1fa86a;
+    border-bottom: 2px #580c64 solid;
+    display: inline-block;
+    height: 139px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.nav .title{
+    color: #121ba8;
+    font-size: 48px;
+    font-family: impact, times, serif;
+    text-align: center;
+    margin: 0;
+    padding: 10px 0 0 0;
+    position: relative;
+}
+
+.linetwo{
+    margin: 0 auto;
+    padding: 0 0;
+    position: relative;
+    width: 559px;
+}
+
+.nav .navMenu{
+    border: 1px #580c64 solid;
+    border-bottom: 0;
+    background-color: #ed9224;
+    border-radius: 5px 5px 0 0;
+    color: #121ba8;
+    cursor: pointer;
+    display: inline-block;
+    font-family: cursive, serif;
+    font-size: 20px;
+    height: 48px;
+    line-height: 45px;
+    margin: 22px 0 0 0;
+    position: relative;
+    text-align: center;
+    width: 175px;
+}
+
+.navMenu:hover{
+    background-color: #de6f54;
+}
+
+#middleNav{
+    margin: 22px 10px 0 10px;
+}
+
+.nav .navList{
+    display: inline-block;
+    font-size: 0;
+    left: -7.33%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 72px;
+    visibility: hidden;
+    width: 738px;
+}
+
+.nav .navList .navChoice{
+    background-color: #de6f54;
+    border: 1px #580c64 solid;
+    border-left: 1.5px #580c64 solid;
+    border-right: 1.5px #580c64 solid;
+    color: #121ba8;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    height: 25px;
+    line-height: 23px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 155px;
+}
+
+.navChoice:hover{
+    text-decoration: underline;
+}
+
+#firstChoice{
+    border-left: 1px #580c64 solid;
+    border-radius: 4px 0 0 4px;
+}
+
+#lastChoice{
+    border-right: 1px #580c64 solid;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Section */
+
+.page{
+    color: #580c64;
+    font-size: 17px;
+    margin: 200px auto 50px auto;
+    text-align: center;
+    width: 70%;
+}
+
+.forms{
+    text-align: center;
+}
+
+#files{
+    width: 225px;
+}
+
+.forms label{
+    color: #580c64;
+    display: inline-block;
+    font-size: 18px;
+    margin: 10px 5px;
+    padding: 0;
+}
+
+.forms input{
+    background-color: #999;
+    border: 1px #555 solid;
+    border-radius: 4px;
+    color: #580c64;
+    padding: 2px 0 2px 2px;
+    width: 32px;
+}
+
+.forms button{
+    background-color: #ed9224;
+    border: 1px #580c64 solid;
+    border-radius: 3px;
+    color: #121ba8;
+}
+
+.forms button:hover{
+    background-color: #de6f54;
+    cursor: pointer;
+}
+
+#descript:hover{
+    background-color: #ed9224;
+    cursor: auto;
+}

@@ -1,3 +1,5 @@
+/* Andoni Garcia's Markov Babbler in JS. 2014 */
+
 html{
     min-height: 100%;
 }
@@ -15,9 +17,9 @@ body{
 /* Nav Bar */
 .nav{
     background: #1fa86a;
-    border-bottom: 2px solid #555;
+    border-bottom: 2px #580c64 solid;
     display: inline-block;
-    height: 138px;
+    height: 139px;
     margin: 0;
     padding: 0;
     position: absolute;
@@ -43,9 +45,11 @@ body{
 
 .nav .navMenu{
     border: 1px #580c64 solid;
+    border-bottom: 0;
     background-color: #ed9224;
     border-radius: 5px 5px 0 0;
     color: #121ba8;
+    cursor: pointer;
     display: inline-block;
     font-family: cursive, serif;
     font-size: 20px;
@@ -66,23 +70,65 @@ body{
 }
 
 .nav .navList{
-    display: none;
+    display: inline-block;
+    font-size: 0;
+    left: -7.33%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 72px;
+    visibility: hidden;
+    width: 738px;
+}
+
+.nav .navList .navChoice{
+    background-color: #de6f54;
+    border: 1px #580c64 solid;
+    border-left: 1.5px #580c64 solid;
+    border-right: 1.5px #580c64 solid;
+    color: #121ba8;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    height: 25px;
+    line-height: 23px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 155px;
+}
+
+.navChoice:hover{
+    text-decoration: underline;
+}
+
+#firstChoice{
+    border-left: 1px #580c64 solid;
+    border-radius: 4px 0 0 4px;
+}
+
+#lastChoice{
+    border-right: 1px #580c64 solid;
+    border-radius: 0 4px 4px 0;
 }
 
 /* Section */
 
 .page{
-    //border: 3px #de6f54 dotted;
+    color: #580c64;
+    font-size: 17px;
     margin: 200px auto 50px auto;
+    text-align: center;
     width: 70%;
-}
-
-#files{
-    display: none;
 }
 
 .forms{
     text-align: center;
+}
+
+#files{
+    width: 225px;
 }
 
 .forms label{
@@ -102,10 +148,6 @@ body{
     width: 32px;
 }
 
-#writeHere{
-    color: #580c64;
-}
-
 .forms button{
     background-color: #ed9224;
     border: 1px #580c64 solid;
@@ -115,4 +157,10 @@ body{
 
 .forms button:hover{
     background-color: #de6f54;
+    cursor: pointer;
+}
+
+#descript:hover{
+    background-color: #ed9224;
+    cursor: auto;
 }

@@ -1,3 +1,5 @@
+<!-- Andoni Garcia's Markov Babbler in JS. 2014 -->
+
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
@@ -13,37 +15,35 @@
         <script src="js/Debugging.js"></script>
         <script src="js/Initializations.js"></script>
         <script src="js/HuckleberryFinn.js"></script>
+        <script src="js/DOMActions.js"></script>
     </head>
 
     <body>
-        <nav class="nav">
+        <nav class="nav" id="nav">
             <header class="title">Markov Babbler</header>
             <div class="linetwo">
-                <p class="navMenu">Markov What?</p>
-                <p class="navMenu" id="middleNav">~ Babblers ~</p>
-                    <ul class="navList">
-                        <li class="navChoice">Huckleberry Finn!</li>
-                        <li class="navChoice">Shakespeare Sonnets</li>
-                        <li class="navChoice">Rap Lyrics</li>
-                        <li class="navChoice">Input Your Own Text</li>
+                <p class="navMenu" id="about" onclick="aboutFn()">Markov What?</p>
+                <p class="navMenu" id="middleNav" onclick="showBabblerList()">~ Babblers ~</p>
+                    <ul class="navList" id="navList">
+                        <li class="navChoice" id="firstChoice" onclick="huckFn()">Huckleberry Finn!</li>
+                        <li class="navChoice" onclick="shakespFn()">Shakespeare Sonnets</li>
+                        <li class="navChoice" onclick="rapgenFn()">Rap Lyrics</li>
+                        <li class="navChoice" id="lastChoice" onclick="inputFn()">Input Your Own Text</li>
                     </ul>
-                <p class="navMenu">Contact Me!<p>
+                <p class="navMenu" onclick="contactFn()">Contact Me!</p>
             </div>
         </nav>
-        <section class="page">
+        <section class="page" id="contentSection">
             <div class="forms">
-                <input type="file" id="files" name="files[]" multiple />
-                <script>
-                    document.getElementById('files').addEventListener('change', handleFileSelect, false);
-                </script>
-                <button type="button" onclick="huckInit()">Huckleberry Finn</button>
+                <script>huckInit();</script>
+                <button type="button" id="descript" disabled>Huckleberry Finn</button>
                 <br />
                 <form name="userInput">
-                    <label for="sentences">
+                    <label>
                         Sentences:
                         <input type="number" name="sentences" min="1" max="10" step="1" value="3">
                     </label>
-                    <label for="paragraphs">
+                    <label>
                         Paragraphs:
                         <input type="number" name="paragraphs" min="1" max="5" step="1" value="2">
                     </label>

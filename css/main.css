@@ -2,7 +2,6 @@
 
 html{
     min-height: 100%;
-    max-width: 100%;
 }
 
 body{
@@ -10,9 +9,15 @@ body{
     color: black;
     margin: 0;
     height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
     width: 100%;
     padding: 0;
     position: absolute;
+}
+
+body::-webkit-scrollbar{
+    display: none;
 }
 
 /* Nav Bar */

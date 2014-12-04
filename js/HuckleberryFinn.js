@@ -10,4 +10,3 @@ function huckInit(){
 	insertFile(HUCKLEBERRYFINN_ARRAY);
 	console.log("Huck Was Initialized");
 }
-

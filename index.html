@@ -15,22 +15,24 @@
         <script src="js/Debugging.js"></script>
         <script src="js/Initializations.js"></script>
         <script src="js/HuckleberryFinn.js"></script>
-        <script src="js/DOMActions.js"></script>
     </head>
 
     <body>
         <nav class="nav" id="nav">
             <header class="title">Markov Babbler</header>
             <div class="linetwo">
-                <p class="navMenu" id="about" onclick="aboutFn()">Markov What?</p>
-                <p class="navMenu" id="middleNav" onclick="showBabblerList()">~ Babblers ~</p>
-                    <ul class="navList" id="navList">
-                        <li class="navChoice" id="firstChoice" onclick="huckFn()">Huckleberry Finn!</li>
-                        <li class="navChoice" onclick="shakespFn()">Shakespeare Sonnets</li>
-                        <li class="navChoice" onclick="rapgenFn()">Rap Lyrics</li>
-                        <li class="navChoice" id="lastChoice" onclick="inputFn()">Input Your Own Text</li>
-                    </ul>
-                <p class="navMenu" onclick="contactFn()">Contact Me!</p>
+                <ul class="navTabs">
+                    <li class="navMenu" id="about">Markov What?</li>
+                    <li class="navMenu" id="middleNav">~ Babblers ~
+                        <ul class="navList" id="navList">
+                            <li class="navChoice" id="firstChoice">Huckleberry Finn!</li>
+                            <li class="navChoice" id="shakeSpeare">Shakespeare Sonnets</li>
+                            <li class="navChoice" id="rapGen">Rap Generator</li>
+                            <li class="navChoice" id="lastChoice">Input Your Own Text</li>
+                        </ul>
+                    </li>
+                    <li class="navMenu" id="contact">Contact Me!</li>
+                </ul>
             </div>
         </nav>
         <section class="page" id="contentSection">
@@ -54,6 +56,7 @@
             <div id="writeHere">
             </div>
         </section>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="js/TabActions.js"></script>
     </body>
 </html>

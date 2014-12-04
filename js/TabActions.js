@@ -5,6 +5,7 @@ function babblePageRender(text1, bool){
         var text3 = "Paragraphs:";
         var text4 = "Ready, Set, Babble!";
         var br = $("<br />");
+        var br2 = $("<br />");
         if(bool){
             var button1 = $("<button></button>")
                     .attr({"type":"button","disabled":"disabled","id":"descript"})
@@ -26,7 +27,7 @@ function babblePageRender(text1, bool){
                 .append(text4);
         var form = $("<form></form>")
                 .attr("name","userInput")
-                .append(label1, label2, br, button2);        
+                .append(label1, label2, br2, button2);        
         var div1 = $("<div></div>")
                 .attr("class","forms")
                 .append(button1, br, form);

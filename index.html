@@ -10,11 +10,6 @@
         <title>Markov Babbler</title>
 
         <link rel="stylesheet" href="css/main.css">
-        <script src="js/babbler.js"></script>
-        <script src="js/FileParsing.js"></script>
-        <script src="js/Debugging.js"></script>
-        <script src="js/Initializations.js"></script>
-        <script src="js/HuckleberryFinn.js"></script>
     </head>
 
     <body>
@@ -37,7 +32,6 @@
         </nav>
         <section class="page" id="contentSection">
             <div class="forms">
-                <script>huckInit();</script>
                 <button type="button" id="descript" disabled>Huckleberry Finn</button>
                 <br />
                 <form name="userInput">
@@ -50,13 +44,17 @@
                         <input type="number" name="paragraphs" min="1" max="5" step="1" value="2">
                     </label>
                     <br />
-                    <button type="button" onclick="start(this.form.sentences.value, this.form.paragraphs.value)">Ready, Set, Go!</button>
+                    <button type="button" id="landingButton">Ready, Set, Babble!</button>
                 </form>
             </div>
             <div id="writeHere">
             </div>
         </section>
+        
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="js/TabActions.js"></script>
+        <script src="js/babbler.js"></script>
+        <script src="js/FileParsing.js"></script>
+        <script src="js/Initializations.js"></script>
     </body>
 </html>

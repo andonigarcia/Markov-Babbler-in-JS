@@ -53,7 +53,7 @@ function htable(nBucks){
 
 function bucketMem(s, b){
 	var tmp = b;
-	while(tmp != undefined && tmp != null){
+	while(tmp !== undefined && tmp !== null){
 		if(tmp.e.word === s)
 			return true;
 		tmp = tmp.nextBucket;
@@ -63,10 +63,10 @@ function bucketMem(s, b){
 
 function listMem(s, l){
 	var tmp = l;
-	while(tmp != undefined && tmp != null){
+	while(tmp !== undefined && tmp !== null){
 		if(tmp.word === s)
 			return true;
-		tmp = tmp.nextWord
+		tmp = tmp.nextWord;
 	}
 	return false;
 }
@@ -219,7 +219,7 @@ function insertFile(upload){
 function nextWord(e){
 	var randNum = Math.floor(Math.random() * e.count);
 	var list = e.nextWord;
-	while(list != undefined){
+	while(list !== undefined){
 		randNum -= list.count;
 		if(randNum <= 0)
 			return list.word;
@@ -264,7 +264,7 @@ function sentence(){
 		if(nxt === "EOS")
 			break;
 		e = htableSearch(nxt);
-		if(e == undefined)
+		if(e === undefined)
 			break;
 		words--;
 	}

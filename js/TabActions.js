@@ -1,8 +1,8 @@
 // Andoni Garcia's Markov Babbler in JS. 2014
 
 function babblePageRender(text1, bool){
-        var text2 = "Sentences:";
-        var text3 = "Paragraphs:";
+        var text2 = "Sentences: ";
+        var text3 = "Paragraphs: ";
         var text4 = "Ready, Set, Babble!";
         var br = $("<br />");
         var br2 = $("<br />");
@@ -84,9 +84,8 @@ $(document).ready(function(){
     });
     
     $("#firstChoice").click(function(){
-        TABLE = new htable(157);
         babblePageRender("Huckleberry Finn", true);
-        huckInit();
+        TABLE = TABLE_ARRAY[0];
         $("#StartBabble").click(function(){
            start(this.form.sentences.value, this.form.paragraphs.value); 
         });
@@ -111,10 +110,15 @@ $(document).ready(function(){
     $("#lastChoice").click(function(){
         TABLE = new htable(157);
         babblePageRender("Input Text", false);
-        $("#files").addEventListener("change",handleFileSelect, false);
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
         $("#StartBabble").click(function(){
-           notReadyYet("Rap Generator"); 
+           start(this.form.sentences.value, this.form.paragraphs.value);
         });
+    });
+    
+    $("#landingButton").click(function(){
+        TABLE = TABLE_ARRAY[0];
+        start(this.form.sentences.value, this.form.paragraphs.value); 
     });
 });
 

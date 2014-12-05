@@ -1,5 +1,3 @@
-/* Andoni Garcia's Markov Babbler in JS. 2014 */
-
 Markov Babbler
 ==============
 

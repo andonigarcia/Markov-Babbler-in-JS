@@ -12,7 +12,7 @@ function babblePageRender(text1, bool){
                     .append(text1);
         } else if (!bool){
             var button1 = $("<input></input>")
-                    .attr({"type":"file","id":"files","name":"files[]","multiple":"multiple"});
+                    .attr({"type":"file","id":"files","name":"files[]","multiple":"multiple","required":"required"});
         }
         var input1 = $("<input></input")
                 .attr({"type":"number","name":"sentences","min":"1","max":"10","step":"1","value":"3"});
@@ -109,10 +109,20 @@ $(document).ready(function(){
     
     $("#lastChoice").click(function(){
         TABLE = new htable(157);
+        testTable = TABLE;
         babblePageRender("Input Text", false);
         document.getElementById('files').addEventListener('change', handleFileSelect, false);
         $("#StartBabble").click(function(){
-           start(this.form.sentences.value, this.form.paragraphs.value);
+            if($("#files").val() === ""){
+                var text = "You must input a file first!";
+                var para = $("<p></p>")
+                    .append(text);
+                $("#writeHere")
+                    .empty()
+                    .append(para);
+            } else {
+                start(this.form.sentences.value, this.form.paragraphs.value);
+            }
         });
     });
     

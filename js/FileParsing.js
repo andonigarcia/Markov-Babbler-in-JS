@@ -15,14 +15,12 @@ function handleFileSelect(evt){
 		var reader = new FileReader();
 		reader.onload = (function(theFile){
 			return function(e){
-				console.log("Reading: "+escape(theFile.name));
 				insertFile(fileToParsableText(e.target.result));
 			};
 		})(f);
 
 		reader.readAsText(f);
 	}
-	console.log("Initialization Worked.");
 }
 
 function fileToParsableText(contents){

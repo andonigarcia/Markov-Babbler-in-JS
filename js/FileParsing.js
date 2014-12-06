@@ -3,10 +3,11 @@
 // =====================================================================
 // ========================== File Parsing =============================
 // =====================================================================
-
+var USERTABLE = new htable(157);
 // Credit to Eric Bidelman
 // http://www.html5rocks.com/en/tutorials/file/dndfiles/
 function handleFileSelect(evt){
+        USERTABLE = new htable(157);
 	var files = evt.target.files;
 	for(var i = 0, f; f = files[i]; i++){
 		if(!f.type.match('text.*')){
@@ -15,7 +16,7 @@ function handleFileSelect(evt){
 		var reader = new FileReader();
 		reader.onload = (function(theFile){
 			return function(e){
-				insertFile(fileToParsableText(e.target.result));
+				insertFile(fileToParsableText(e.target.result),USERTABLE);
 			};
 		})(f);
 

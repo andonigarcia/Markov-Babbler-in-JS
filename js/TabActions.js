@@ -85,22 +85,21 @@ $(document).ready(function(){
     
     $("#firstChoice").click(function(){
         babblePageRender("Huckleberry Finn", true);
-        TABLE = TABLE_ARRAY[0];
+        var t = TABLE_ARRAY[0];
         $("#StartBabble").click(function(){
-           start(this.form.sentences.value, this.form.paragraphs.value); 
+           start(this.form.sentences.value, this.form.paragraphs.value, t); 
         });
     });
     
     $("#shakeSpeare").click(function(){
-        TABLE = new htable(157);
         babblePageRender("Shakespeare Sonnets", true);
+        var t = TABLE_ARRAY[1];
         $("#StartBabble").click(function(){
-           notReadyYet("Shakespeare Sonnets"); 
+           start(this.form.sentences.value, this.form.paragraphs.value, t);
         });
     });
     
     $("#rapGen").click(function(){
-        TABLE = new htable(157);
         babblePageRender("Rap Generator", true);
         $("#StartBabble").click(function(){
            notReadyYet("Rap Generator"); 
@@ -108,8 +107,6 @@ $(document).ready(function(){
     });
     
     $("#lastChoice").click(function(){
-        TABLE = new htable(157);
-        testTable = TABLE;
         babblePageRender("Input Text", false);
         document.getElementById('files').addEventListener('change', handleFileSelect, false);
         $("#StartBabble").click(function(){
@@ -121,14 +118,13 @@ $(document).ready(function(){
                     .empty()
                     .append(para);
             } else {
-                start(this.form.sentences.value, this.form.paragraphs.value);
+                start(this.form.sentences.value, this.form.paragraphs.value, USERTABLE);
             }
         });
     });
     
     $("#landingButton").click(function(){
-        TABLE = TABLE_ARRAY[0];
-        start(this.form.sentences.value, this.form.paragraphs.value); 
+        var t = TABLE_ARRAY[0];
+        start(this.form.sentences.value, this.form.paragraphs.value, t); 
     });
 });
-

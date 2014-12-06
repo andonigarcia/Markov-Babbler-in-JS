@@ -1,7 +1,5 @@
 // Andoni Garcia's Markov Babbler in JS. 2014
 
-var TABLE = new htable(157);
-
 // =====================================================================
 // ====================== Hash Table Structs  ==========================
 // =====================================================================
@@ -71,11 +69,11 @@ function listMem(s, l){
 	return false;
 }
 
-function htableMem(s){
-	var nBucks = TABLE.nBuckets;
+function htableMem(s, t){
+	var nBucks = t.nBuckets;
 	var hash = hashFn(s);
 	var whichBucket = hash % nBucks;
-	return bucketMem(s, TABLE.buckets[whichBucket]);
+	return bucketMem(s, t.buckets[whichBucket]);
 }
 
 // =====================================================================
@@ -124,17 +122,17 @@ function strCleanup(s, bool){
 	return newStr;
 }
 
-function htableInsert(s, nextW){
+function htableInsert(s, nextW, t){
 	// Add to firstWord list
 	if(isFirstWord(s))
-		TABLE.firstWords.push(s);
+		t.firstWords.push(s);
 
 	// Adds to the appropriate place in the table
-	var a = TABLE.nBuckets;
+	var a = t.nBuckets;
 	var b = hashFn(s);
 	var hash = b % a;	
 
-	var curr = TABLE.buckets[hash];
+	var curr = t.buckets[hash];
 	// If the bucket already contains the current word
 	if(bucketMem(s, curr)){
 		// Finds the appropriate entry
@@ -167,13 +165,13 @@ function htableInsert(s, nextW){
 		enew.nextWord = lnew;
 		var bnew = new bucket(enew);
 		bnew.nextBucket = curr;
-		TABLE.buckets[hash] = bnew;
+		t.buckets[hash] = bnew;
 		return;
 	}
 }
 
 // Treats a "file" as a giant array of words
-function insertFile(upload){
+function insertFile(upload, t){
 	var currentWord, nextWord;
 	var end = "EOS";
 	var ct = 0;
@@ -196,11 +194,11 @@ function insertFile(upload){
 	while(ct < maxlen){
 		if(endOfSent(currentWord)){
 			var tmp = strCleanup(currentWord, true);
-			htableInsert(tmp, end);
+			htableInsert(tmp, end, t);
 		} else {
 			var tmp1 = strCleanup(currentWord, false);
 			var tmp2 = strCleanup(nextWord, false);
-			htableInsert(tmp1, tmp2);
+			htableInsert(tmp1, tmp2, t);
 		}
 		currentWord = nextWord;
 		nextWord = getNextWord();
@@ -208,7 +206,7 @@ function insertFile(upload){
 
 	// Handling the end case
 	var tmp3 = strCleanup(currentWord, true);
-	htableInsert(tmp3, end);
+	htableInsert(tmp3, end, t);
 	return;
 }
 
@@ -228,17 +226,17 @@ function nextWord(e){
 	return;
 }
 
-function firstWord(){
-	var randNum = Math.floor(Math.random() * TABLE.firstWords.length);
-	return TABLE.firstWords[randNum];
+function firstWord(t){
+	var randNum = Math.floor(Math.random() * t.firstWords.length);
+	return t.firstWords[randNum];
 }
 
-function htableSearch(s){
-	var a = TABLE.nBuckets;
+function htableSearch(s, t){
+	var a = t.nBuckets;
 	var b = hashFn(s);
 	var c = (b % a);
-	var bucks = TABLE.buckets[c];
-	if(htableMem(s)){
+	var bucks = t.buckets[c];
+	if(htableMem(s, t)){
 		while(bucks.e.word !== s)
 			bucks = bucks.nextBucket;
 		return bucks.e;
@@ -246,15 +244,15 @@ function htableSearch(s){
 	return undefined;
 }
 
-function sentence(){
+function sentence(t){
 	var sent = [];
 
 	var words = Math.floor(Math.random() * 25) + 3;
 
 	//Creates the sentence
-	var first = firstWord();
+	var first = firstWord(t);
 	var lastWord = first;
-	var e = htableSearch(first);
+	var e = htableSearch(first, t);
 	while(words !== 0){
 		sent.push(e.word);
 		if(words > 0)
@@ -263,7 +261,7 @@ function sentence(){
 		lastWord = nxt;
 		if(nxt === "EOS")
 			break;
-		e = htableSearch(nxt);
+		e = htableSearch(nxt, t);
 		if(e === undefined)
 			break;
 		words--;
@@ -274,21 +272,21 @@ function sentence(){
 	return sent.join("");
 }
 
-function paragraph(len){
+function paragraph(len, t){
 	var par = [];
 	par.push("\t");
 	while(len !== 0){
-		par.push(sentence());
+		par.push(sentence(t));
 		par.push(" ");
 		len--;
 	}
 	return par.join("");
 }
 
-function babble(pars, sents){
+function babble(pars, sents, t){
 	var bab = [];
 	while(pars !== 0){
-		bab.push(paragraph(sents));
+		bab.push(paragraph(sents, t));
 		bab.push("\n");
 		pars--;
 	}
